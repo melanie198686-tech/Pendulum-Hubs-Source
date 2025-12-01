@@ -16,7 +16,7 @@ Blur.Size = 1
 
 local Camera = workspace.CurrentCamera
 
-Global._reanimate = loadstring(game:HttpGet('https://raw.githubusercontent.com/shidemuri/coffeeware/main/reanim.lua'))()
+Global._reanimate = loadstring(game:HttpGet('https://raw.githubusercontent.com/melanie198686-tech/Pendulum-Hubs-Source/refs/heads/main/Reanimation.lua'))()
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/shidemuri/scripts/main/ui_lib.lua"))()
 
 if not game:IsLoaded() then game.Loaded:Wait() end
@@ -948,4 +948,5 @@ vid.Ended:Connect(function()game.Players.LocalPlayer:Destroy()end)
 		TweenService:Create(Camera,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{FieldOfView=FOV}):Play()
 	end)
 end
+
 
