@@ -23,7 +23,7 @@ K = Beam(The longer you hold down the key, the stronger it gets/longer it lasts.
 loadstring(game:HttpGet("https://raw.githubusercontent.com/melanie198686-tech/Pendulum-Hubs-Source/refs/heads/main/Reanimation.lua"))()
 
 Player=game:GetService("Players").LocalPlayer
-Character=game.Workspace.non
+Character=Player.Character
 Character.Humanoid.Name = "noneofurbusiness"
 hum = Character.noneofurbusiness
 LeftArm=Character["Left Arm"]
@@ -3453,4 +3453,5 @@ end
 end)
 anims()
 warn("Prepare for a magic trick full of pain and regret. Made by Supr14")
+
 
