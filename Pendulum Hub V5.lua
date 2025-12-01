@@ -123,7 +123,7 @@ do -- UI
 		end)
 
 		ScriptsTab:NewButton("Xester", "The strongest script out of them all.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/35xGEyg"))()
+			loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/melanie198686-tech/Pendulum-Hubs-Source/refs/heads/main/FEXESTERFINALLY!!!!!!!.lua"))()
 		end)
 
 		ScriptsTab:NewButton("Caducus", "Edgy demon guy.", function()
@@ -948,3 +948,4 @@ vid.Ended:Connect(function()game.Players.LocalPlayer:Destroy()end)
 		TweenService:Create(Camera,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{FieldOfView=FOV}):Play()
 	end)
 end
+
