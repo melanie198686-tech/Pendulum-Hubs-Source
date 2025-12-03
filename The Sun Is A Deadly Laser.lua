@@ -1,7 +1,7 @@
 --//====================================================\\--
 --||			   CREATED BY SHACKLUSTER
 --\\====================================================//--
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Tescalus/Pendulum-Hubs-Source/main/Reanimation.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/melanie198686-tech/Pendulum-Hubs-Source/refs/heads/main/The%20Sun%20Is%20A%20Deadly%20Laser.lua"))()
 Player = game:GetService("Players").LocalPlayer
 PlayerGui = Player.PlayerGui
 Cam = workspace.CurrentCamera
@@ -1243,4 +1243,5 @@ end
 
 --//====================================================\\--
 --||			  		 END OF SCRIPT
+
 --\\====================================================//--
