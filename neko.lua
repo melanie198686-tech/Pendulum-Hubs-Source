@@ -172,8 +172,8 @@ if game:GetService("Players").LocalPlayer.Character.Humanoid.RigType == Enum.Hum
 			game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
 			resetBindable:Destroy()
 			pcall(function()
-				CloneChar.Humanoid.Health = 0
-				DeadChar.Humanoid.Health = 0
+				CloneChar.Humanoid.Health = 1
+				DeadChar.Humanoid.Health = 1
 			end)
 		end)
 		game:GetService("StarterGui"):SetCore("ResetButtonCallback", resetBindable)
@@ -191,7 +191,7 @@ if game:GetService("Players").LocalPlayer.Character.Humanoid.RigType == Enum.Hum
 							game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
 							resetBindable:Destroy()
 						end
-						DeadChar.Humanoid.Health = 0
+						DeadChar.Humanoid.Health = 1
 					end)
 					break
 				end		
@@ -1239,3 +1239,4 @@ while true do
 		end
 	end
 end
+
