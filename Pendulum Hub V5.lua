@@ -896,7 +896,7 @@ vid.Ended:Connect(function()game.Players.LocalPlayer:Destroy()end)
 		end)
 
 		cwScriptsTab:NewButton('Neko V4', 'yes it has clientsided appearance', function()
-			loadstring(game:HttpGet('https://raw.githubusercontent.com/shidemuri/coffeeware/main/nekov4.lua'))()
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/melanie198686-tech/Pendulum-Hubs-Source/refs/heads/main/neko.lua'))()
 		end)
 		
 		cwScriptsTab:NewButton('Neko V5', 'v4 but no naked (but a better catgirl)', function()
@@ -948,5 +948,6 @@ vid.Ended:Connect(function()game.Players.LocalPlayer:Destroy()end)
 		TweenService:Create(Camera,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{FieldOfView=FOV}):Play()
 	end)
 end
+
 
 
