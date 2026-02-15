@@ -87,7 +87,7 @@ do -- UI
 		end)
 
 		ScriptsTab:NewButton("Ender", "Smashy boi", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/35VT02P"))()
+			loadstring(game:HttpGet("https://pastefy.app/KzEULNKJ/raw"))()
 		end)
 
 		ScriptsTab:NewButton("KillBot V2", "The script kinda sucks lol", function()
@@ -127,11 +127,11 @@ do -- UI
 		end)
 
 		ScriptsTab:NewButton("Caducus", "Edgy demon guy.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3Cln304"))()
+			loadstring(game:HttpGet("https://pastefy.app/8zIC0JCQ/raw"))()
 		end)
 
 		ScriptsTab:NewButton("Minigun", "Have fun spraying skids.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3Cqns13"))()
+			loadstring(game:HttpGet("https://pastefy.app/f11IsQSk/raw"))()
 		end)
 
 		ScriptsTab:NewButton("Lightning Sword", "Similar to Dual Ultima. its basiclly an edit.", function()
@@ -155,7 +155,7 @@ do -- UI
 		end)
 
 		ScriptsTab:NewButton("Gale Fighter", "Another classic!", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3ClMnTL"))()
+			loadstring(game:HttpGet("https://pastefy.app/pWgrESP0/raw"))()
 		end)
 
 		ScriptsTab:NewButton("Glove & Sword", "The script isn't broken press f to equip.", function()
@@ -266,16 +266,28 @@ do -- UI
 			loadstring(game:HttpGetAsync("https://bit.ly/3tB2Qzu"))()
 		end)
 
-		ScriptsTab:NewButton("John Doe", "Yeah I added him back with better fling", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3HWSAX7"))()
+		ScriptsTab:NewButton("John Doe", "Yeah not mine sry", function()
+			loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fe-John-doe-46160"))()
+		end)
+
+		ScriptsTab:NewButton("Reaper", "My favorite one.", function()
+			loadstring(game:HttpGet("https://pastefy.app/lySuA9az/raw"))()
 		end)
 
 		ScriptsTab:NewButton("What another one", "Yes thats the scripts name Mr. Skiddy Titty", function()
 			loadstring(game:HttpGetAsync("https://bit.ly/3IUKqjB"))()
 		end)
 
+		ScriptsTab:NewButton("Jason", "Yes thats the one in forsaken", function()
+			loadstring(game:HttpGetAsync("https://bit.ly/3IUKqjB"))()
+		end)
+
 		ScriptsTab:NewButton("Ether", "Do people even read these?", function()
 			loadstring(game:HttpGetAsync("https://bit.ly/3KhwWyC"))()
+		end)
+
+		ScriptsTab:NewButton("Rune", "Hi.", function()
+			loadstring(game:HttpGet("https://pastefy.app/lySuA9az/raw"))()
 		end)
 
 		ScriptsTab:NewButton("Uncle Parlo The Redneck", "Parlo is not a pedophile I swear!", function()
@@ -287,15 +299,31 @@ do -- UI
 		end)
 
 		ScriptsTab:NewButton("Cop", "Your average cop.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3CnvhEK"))()
+			loadstring(game:HttpGet("https://pastefy.app/RDV0hCiu/raw"))()
 		end)
 
-		ScriptsTab:NewButton("Verlex", "Very unique script that i've seen.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/361hjws"))()
+		ScriptsTab:NewButton("Cop v2", "Your average cop v2.", function()
+			loadstring(game:HttpGet("https://pastefy.app/6YIGN5J0/raw"))()
+		end)
+
+		ScriptsTab:NewButton("Sledgehammer", "Have  fun sledging people haha you know? no ok.", function()
+			loadstring(game:HttpGet("https://gist.githubusercontent.com/MelonsStuff/bc7a020c542be0b7f528a5d8fda5ad52/raw/0db8993dc638613bd91b10fdbceb5c2d0754711e/SledgeHammer.lua"))()
 		end)
 
 		ScriptsTab:NewButton("Lost Hope", "Dragon Scythe thing and its cool", function()
 			loadstring(game:HttpGetAsync("https://bit.ly/3pLoUX1"))()
+		end)
+
+		ScriptsTab:NewButton("Vereus", "Yes a flying monster i know.", function()
+			loadstring(game:HttpGet("https://pastefy.app/PN2tKnnh/raw"))()
+		end)
+
+		ScriptsTab:NewButton("Server Admin", "A cool being admin.", function()
+			loadstring(game:HttpGet("https://paste.c-net.org/SiliconSister"))()
+		end)
+
+		ScriptsTab:NewButton("Suicidegun", "I dont know what to name this.", function()
+			loadstring(game:HttpGet("https://pastebin.com/raw/TQGaAivj"))()
 		end)
 
 		ScriptsTab:NewButton("The Assasian", "A shit ton of moves that are epic", function()
@@ -335,6 +363,10 @@ do -- UI
 			loadstring(game:HttpGetAsync("https://bit.ly/3pLoShL"))()
 		end)
 
+		ScriptsTab:NewButton("LCV", "No fling added sry.", function()
+			loadstring(game:HttpGetAsync("https://bit.ly/3IUKqjB"))()
+		end) 
+
 		ScriptsTab:NewButton("M41451", "Rainbow AK47 needed join the discord for hat.", function()
 			loadstring(game:HttpGetAsync("https://bit.ly/35FwKKT"))()
 		end)
@@ -344,27 +376,15 @@ do -- UI
 		end)
 
 		ScriptsTab:NewButton("AK47", "Very OP gun script.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3hPAdJi"))()
-		end)
-
-		ScriptsTab:NewButton("AKV", "Very high mag.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/35z9zC3"))()
-		end)
-
-		ScriptsTab:NewButton("Chips/Pillow", "Crank that real soldia boi.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3IXeMlq"))()
-		end)
-
-		ScriptsTab:NewButton("Noob Baseball Bat", "This one is very questionable...", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/35ZY7il"))()
+			loadstring(game:HttpGetAsync("https://pastebin.com/raw/gMV0qMNd"))()
 		end)
 
 		ScriptsTab:NewButton("Ban Sword", "very cool", function()
 			loadstring(game:HttpGetAsync("https://bit.ly/35UwqYq"))()
 		end)
 
-		ScriptsTab:NewButton("Rainbow Banisher", "OMG RAINBOW HACKER", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3sRGZEM"))()
+		ScriptsTab:NewButton("Banisher", "OMG RAINBOW HACKER", function()
+			loadstring(game:HttpGet("https://pastefy.app/kOzC7NyY/raw"))()
 		end)
 
 		ScriptsTab:NewButton("Flamethrower", "Terrorism. What else do you want me to say?", function()
@@ -380,7 +400,7 @@ do -- UI
 		end)
 
 		ScriptsTab:NewButton("Echo Banisher", "Just your average banisher.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3pN5il3"))()
+			loadstring(game:HttpGet("https://pastefy.app/kOzC7NyY/raw"))()
 		end)
 
 		ScriptsTab:NewButton("What do I even name this?", "you'll just have to execute it to find out what it is", function()
@@ -395,10 +415,6 @@ do -- UI
 			loadstring(game:HttpGetAsync("https://bit.ly/35IeDUt"))()
 		end)
 
-		ScriptsTab:NewButton("John Doe Blaster", "insert edgy hacker quote here", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3hKeXER"))()
-		end)
-
 		ScriptsTab:NewButton("The Distorted", "Distorting aaaaa", function()
 			loadstring(game:HttpGetAsync("https://bit.ly/3KtVYdJ"))()
 		end)
@@ -411,10 +427,6 @@ do -- UI
 			loadstring(game:HttpGetAsync("https://bit.ly/3hRiaCx"))()
 		end)
 
-		ScriptsTab:NewButton("Technoblade", "No this is not a minecraft script.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/34mb6KS"))()
-		end)
-
 		ScriptsTab:NewButton("Demonic Sword", "Sword, nothin else. Pretty unoriginal", function()
 			loadstring(game:HttpGetAsync("https://bit.ly/3HRBjih"))()
 		end)
@@ -424,7 +436,7 @@ do -- UI
 		end)
 
 		ScriptsTab:NewButton("Chara", "knife girl sexy uwu", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3ClNT8p"))()
+			loadstring(game:HttpGet("https://pastefy.app/dlEwUdHX/raw"))()
 		end)
 
 		ScriptsTab:NewButton("Video Powers", "Infamous Second Son reference", function()
@@ -464,7 +476,7 @@ do -- UI
 		end)
 
 		ScriptsTab:NewButton("Killer", "scary", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/36ZZqyn"))()
+			loadstring(game:HttpGet("https://pastefy.app/riYch0rX/raw"))()
 		end)
 
 		ScriptsTab:NewButton("Spectrum Glitcher", "This also has the big black.", function()
@@ -503,6 +515,10 @@ do -- UI
 			loadstring(game:HttpGetAsync("https://bit.ly/3hNYMGt"))()
 		end)
 
+		ScriptsTab:NewButton("Goner", "Sounds like gooner lol.", function()
+			loadstring(game:HttpGet("https://pastefy.app/nDAe06kL/raw"))()
+		end)
+
 		ScriptsTab:NewButton("Wing Gun Destroyer", "The Destroyer (Aligners will align wings)", function()
 			loadstring(game:HttpGetAsync("https://bit.ly/37co9jf"))()
 		end)
@@ -535,15 +551,15 @@ do -- UI
 			loadstring(game:HttpGetAsync("https://bit.ly/371egFu"))()
 		end)
 
-		ScriptsTab:NewButton("Grab Knife V3 - Recommended", "Finished version of Grab Knife. I had to do it lol.", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/3MBauma"))()
+		ScriptsTab:NewButton("Lighting cannon", "PEOW PEOW", function()
+			loadstring(game:HttpGet("https://pastefy.app/4JcOHGNW/raw"))()
 		end)
 
-		ScriptsTab:NewButton("Grab Knife V4", "EXTREMELY UNSTABLE! YOU HAVE BEEN WARNED!", function()
-			loadstring(game:HttpGetAsync("https://bit.ly/35zXBIm"))()
+		ScriptsTab:NewButton("chair", "be a chair whattt???", function()
+			loadstring(game:HttpGet("https://pastefy.app/fg7VC3QU/raw"))()
 		end)
 
-		ScriptsTab:NewButton("Studio Dummy V3", "Omg public studio dummy v3 in pendulum free!?!?!!?!?!?!?!?!!?!?!?!?!?!?!?!!?!?!?!?!?!?!?!?!?!?!?!", function()
+		ScriptsTab:NewButton("Studio Dummy V3", "Omg public studio dummy v3 in pendulum free!?", function()
 			loadstring(game:HttpGetAsync("https://bit.ly/3QQiKAu"))()
 		end)
 		
@@ -833,11 +849,6 @@ do -- UI
 	end
 	
 	do -- Credits
-		CreditsTab:NewLabel("THIS SCRIPT DOESNT WORK ANYMORE")
-		CreditsTab:NewLabel("THIS SCRIPT DOESNT WORK ANYMORE")
-		CreditsTab:NewLabel("THIS SCRIPT DOESNT WORK ANYMORE")
-		CreditsTab:NewLabel("THIS SCRIPT DOESNT WORK ANYMORE")
-		CreditsTab:NewLabel("THIS SCRIPT IS DISCONTINUED")
 		CreditsTab:NewLabel("READ BELOW FOR MORE INFORMATION")
 		CreditsTab:NewLabel("Roblox added a new workspace property called")
 		CreditsTab:NewLabel('"RejectCharacterDeletions" in Feb 2023"')
@@ -858,6 +869,7 @@ do -- UI
 		CreditsTab:NewLabel("Ty ProductionTakeOne#3330 for help with new reanimation")
 		CreditsTab:NewLabel("Old ui was made by charli#4616")
 		CreditsTab:NewLabel("New ui was made by padero#3957")
+		CreditsTab:NewLabel("everthing got fixed by babylarry_20947")
 		
 		CreditsTab:NewButton("\67\111\112\121\32\68\105\115\99\111\114\100\32\73\110\118\105\116\101", "\67\111\112\105\101\115\32\116\104\101\32\105\110\118\105\116\101\46.", function()
 			setclipboard("\100\105\115\99\111\114\100\46\103\103\47\71\113\98\77\53\87\69\80\100\113")
@@ -932,7 +944,7 @@ vid.Ended:Connect(function()game.Players.LocalPlayer:Destroy()end)
 	
 	do -- Pendelum
 		Pendulum:SetMainTab(CreditsTab)
-		Pendulum:SetFooter('Current version: V5')
+		Pendulum:SetFooter('Current version: V6')
 	end
 	
 	CoreGui:WaitForChild("ScreenGui").Name = "Pendulum Hub"
@@ -948,6 +960,7 @@ vid.Ended:Connect(function()game.Players.LocalPlayer:Destroy()end)
 		TweenService:Create(Camera,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{FieldOfView=FOV}):Play()
 	end)
 end
+
 
 
 
