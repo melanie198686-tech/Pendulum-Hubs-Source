@@ -116,8 +116,8 @@ Humanoid.JumpPower = 80
 local Attacking = false
 local AttackANVal = 1
 local bambam = Instance.new("BodyThrust")
-bambam.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
-bambam.Force = Vector3.new(1000,0,1000)
+bambam.Parent = Humanoid.RootPart
+bambam.Force = Vector3.new(100000, 0, 100000)
 bambam.Location = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 rayCast = function(Pos, Dir, Max, Ignore)
 
