@@ -50,8 +50,8 @@ do
 	local CreateHumanoidModelFromDescription = Players.CreateHumanoidModelFromDescription
 	local GetPlayers = Players.GetPlayers
 	local LocalPlayer = Players.LocalPlayer
+	local CharacterAdded = Local.Player.CharacterAdded
 	local Character.Humanoid.Died
-	local ConnectDiedSignalBackend = LocalPlayer.ConnectDiedSignalBackend
 	local Mouse = LocalPlayer:GetMouse()
 	local Kill = LocalPlayer.Kill
 	local RunService = FindFirstChildOfClass(game, "RunService")
