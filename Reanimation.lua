@@ -1,1143 +1,2897 @@
-local Global = (getgenv and getgenv()) or shared
--- [[ Services ]] --
-local Speed = tick()
-local Players = game:FindFirstChildOfClass("Players")
-local UserInputService = game:FindFirstChildOfClass("UserInputService")
-local TestService = game:FindFirstChildOfClass("TestService")
-local RunService = game:FindFirstChildOfClass("RunService")
-local StarterGui = game:FindFirstChildOfClass("StarterGui")
-local CoreGui = game:FindFirstChildOfClass("CoreGui")
-local Player = Players.LocalPlayer
-local HubMode = Global.HubMode or false
+getgenv().GelatekReanimateConfig = {
+    ["AnimationsDisabled"] = false,
+    ["R15ToR6"] = true,
+    ["PermanentDeath"] = true,
+    ["TorsoFling"] = false,
+    ["BulletEnabled"] = true,
+    ["LoadLibrary"] = false,
+    ["NewVelocityMethod"] = false,
+    ["DontBreakHairWelds"] = false,
+    ["TeleportBackWhenVoided"] = false,
+    ["MoreAccurateOffsets"] = false,
+    ["DetailedCredits"] = false,
+    ["Headless"] = false,
+    ["BulletConfig"] = {
+        ["RunAfterReanimate"] = true,
+        ["LockBulletOnTorso"] = false,
+    }
+}
+loadstring(game:HttpGet("https://raw.githubusercontent.com/melanie198686-tech/yep/refs/heads/main/README.md"))()
+wait(8)
+getgenv().LoadLibrary = function(lib) return loadstring(game:HttpGet("https://raw.githubusercontent.com/Roblox/Core-Scripts/master/CoreScriptsRoot/Libraries/" .. lib .. ".lua"))() end
 
--- [[ Variables ]] --
-local Events = {}
-local BodyVels = {}
-local Root_Offset = 0.02
-local Velocity = Vector3.new(0,0,-25.8)
-local SpawnPoint = workspace:FindFirstChildOfClass("SpawnLocation",true) and workspace:FindFirstChildOfClass("SpawnLocation",true) or CFrame.new(0,20,0)
 
--- [[ Functions ]] --
-local setfflag = setfflag or function(flag,bool) game:DefineFastFlag(flag,bool) end
-local isnetworkowner = isnetworkowner or function(Part) return Part.ReceiveAge == 0 end
-local sethiddenproperty = sethiddenproperty or set_hidden_property or function() end 
-	
--- [[ Checking Settings ]] --
-local Config = Global.GelatekReanimateConfig or {}
-Global.TableOfEvents = {}
+local FavIDs = {
+	340106355, --Nefl Crystals
+	927529620, --Dimension
+	876981900, --Fantasy
+	398987889, --Ordinary Days
+	1117396305, --Oh wait, it's you.
+	885996042, --Action Winter Journey
+	919231299, --Sprawling Idiot Effigy
+	743466274, --Good Day Sunshine
+	727411183, --Knife Fight
+	1402748531, --The Earth Is Counting On You!
+	595230126 --Robot Language
+	}
 
---[[ Ownership ]] --
-local DisableTweaks = Config.DisableTweaks or false -- Disables Net-Boosting Tweaks
-local DynamicalVelocity = Config.DynamicalVelocity or false -- Enables Dynamical/Movement Velocity
 
--- [[ Details ]] --
-local DetailedCredits = Config.DetailedCredits or false -- Detailed Credits lol
 
--- [[ Rig Settings ]] --
-local AreAnimationsDisabled = Config.AnimationsDisabled or false -- Disable Anims
-local IsPermaDeath = Config.PermanentDeath or false -- Permanent Death
+--The reality of my life isn't real but a Universe -makhail07
+wait(0.2)
+local plr = game:service'Players'.LocalPlayer
+print('Local User is '..plr.Name)
+print('Gale Fighter Loaded')
+print('The Fighter that is as fast as wind, a true Fighter')
+local char = plr.Character
+local hum = char.Humanoid
+local hed = char.Head
+local root = char.HumanoidRootPart
+local rootj = root.RootJoint
+local tors = char.Torso
+local ra = char["Right Arm"]
+local la = char["Left Arm"]
+local rl = char["Right Leg"]
+local ll = char["Left Leg"]
+local neck = tors["Neck"]
+local mouse = plr:GetMouse()
+local RootCF = CFrame.fromEulerAnglesXYZ(-1.57, 0, 3.14)
+local RHCF = CFrame.fromEulerAnglesXYZ(0, 1.6, 0)
+local LHCF = CFrame.fromEulerAnglesXYZ(0, -1.6, 0)
+local maincolor = BrickColor.new("Institutional white")
+hum.MaxHealth = 200
+hum.Health = 200
 
--- [[ R15 Stuff ]] --
-local R15ToR6 = Config.R15ToR6 or false -- Convert R15 To R6
+-------------------------------------------------------
+--Start Good Stuff--
+-------------------------------------------------------
+cam = game.Workspace.CurrentCamera
+CF = CFrame.new
+angles = CFrame.Angles
+attack = false
+Euler = CFrame.fromEulerAnglesXYZ
+Rad = math.rad
+IT = Instance.new
+BrickC = BrickColor.new
+Cos = math.cos
+Acos = math.acos
+Sin = math.sin
+Asin = math.asin
+Abs = math.abs
+Mrandom = math.random
+Floor = math.floor
+-------------------------------------------------------
+--End Good Stuff--
+-------------------------------------------------------
+necko = CF(0, 1, 0, -1, -0, -0, 0, 0, 1, 0, 1, 0)
+RSH, LSH = nil, nil 
+RW = Instance.new("Weld") 
+LW = Instance.new("Weld")
+RH = tors["Right Hip"]
+LH = tors["Left Hip"]
+RSH = tors["Right Shoulder"] 
+LSH = tors["Left Shoulder"] 
+RSH.Parent = nil 
+LSH.Parent = nil 
+RW.Name = "RW"
+RW.Part0 = tors 
+RW.C0 = CF(1.5, 0.5, 0)
+RW.C1 = CF(0, 0.5, 0) 
+RW.Part1 = ra
+RW.Parent = tors 
+LW.Name = "LW"
+LW.Part0 = tors 
+LW.C0 = CF(-1.5, 0.5, 0)
+LW.C1 = CF(0, 0.5, 0) 
+LW.Part1 = la
+LW.Parent = tors
+vt = Vector3.new
+Effects = {}
+-------------------------------------------------------
+--Start HeartBeat--
+-------------------------------------------------------
+ArtificialHB = Instance.new("BindableEvent", script)
+ArtificialHB.Name = "Heartbeat"
+script:WaitForChild("Heartbeat")
 
--- [[ Align Reanimate ]] --
-local AlignReanimate = Config.AlignReanimate or false -- Align Reanimate
-local MaxAlignReanimate = Config.FullForceAlign or false -- Maximazes Align Position Force by making another one, might be less stable but no longer wacky
+frame = 1 / 90
+tf = 0
+allowframeloss = false
+tossremainder = false
 
--- [[ Optimizer ]] --
-local OptimizeGame = Config.OptimizeGame or false -- Runs Game Optimizer.
-if OptimizeGame == true and (not TestService:FindFirstChild("Check")) then
-	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/L8X/GameOptimizer/main/src.lua", true))()
-	local Part = Instance.new("Part")
-	Part.Name = "Check"
-	Part.Parent = TestService
-end
-local FasterHeartbeat = Config.FasterHeartbeat or false
--- Uses Newer Runservices, which makes artifical event x2 times faster than heartbeat, can affect fps. 
 
--- [[ Extra ]] --
-local DontBreakHairWelds = Config.DontBreakHairWelds or false -- Keeps Hair to head (Non Perma Only)
-local IsLoadLibraryEnabled = Config.LoadLibrary or false -- LoadLibrary
-local TeleportBackWhenVoided = Config.TeleportBackWhenVoided or false -- Teleports back to surface whenever you fall into void
-local IsHeadless = Config.Headless or false -- Headless Only On Permanent Death
-local OldVelocityMethod = Config.OldVelocityMethod or false -- Self Explainatory
+lastframe = tick()
+script.Heartbeat:Fire()
 
--- [[ Flinging Methods ]] --
-local IsTorsoFling = Config.TorsoFling or false -- Torso/Collision Fling
-local IsBulletEnabled = Config.BulletEnabled or false -- Enable Bullet
-local BulletConfig = Config.BulletConfig or {}
-local BulletAfterReanim = BulletConfig.RunAfterReanimate or false -- Run After Reanimate
-local LockBulletOnTorso = BulletConfig.LockBulletOnTorso or false -- Lock Bullet On Torso
-if IsTorsoFling == true and IsBulletEnabled == true then
-	IsTorsoFling = false
-end
 
-task.spawn(function()
--- [[ Custom Functions ]] --
-local CFrameAlign = function(Part0, Part1, Position, Angle)
-	local CFrame_Position = Position or CFrame.new()
-	local CFrame_Angle = Angle or CFrame.Angles(0,0,0)
-	if isnetworkowner(Part0) == true then
-		Part0.CFrame = Part1.CFrame * CFrame_Position * CFrame_Angle
-		if Part0:FindFirstChild("OwnershipCheck") then
-			Part0:FindFirstChild("OwnershipCheck").Transparency = 1
-		end
-	elseif isnetworkowner(Part0) == false then
-		if Part0:FindFirstChild("OwnershipCheck") then
-			Part0:FindFirstChild("OwnershipCheck").Transparency = 0
-		end
-	end
-end
-local Align = function(Part0, Part1, Position, Orientation)
-	local AlignPosition = Instance.new("AlignPosition"); do
-		AlignPosition.MaxForce = 66666666666
-		AlignPosition.RigidityEnabled = true
-		AlignPosition.Responsiveness = 200
-		AlignPosition.Name = "AlignPosition_1"
-		AlignPosition.Parent = Part0
-	end
-
-	local AlignOrientation = Instance.new("AlignOrientation"); do
-		AlignOrientation.MaxTorque = 9e9 -- Better To Decrease this to avoid weird movement on R15.
-		AlignOrientation.Responsiveness = 200
-		AlignOrientation.Name = "AlignOrientation"
-		AlignOrientation.Parent = Part0
-	end
-
-	local Attachment1 = Instance.new("Attachment"); do
-		Attachment1.Position = Position or Vector3.new(0,0,0)
-		Attachment1.Orientation = Orientation or Vector3.new(0,0,0)
-		Attachment1.Name = "Attachment_1"
-		Attachment1.Parent = Part0
-	end
-
-	local Attachment2 = Instance.new("Attachment"); do
-		Attachment2.Name = "GelatekATT2"
-		Attachment2.Parent = Part1
-	end
-
-	AlignPosition.Attachment0 = Attachment1
-	AlignPosition.Attachment1 = Attachment2
-	AlignOrientation.Attachment0 = Attachment1
-	AlignOrientation.Attachment1 = Attachment2
-
-	if MaxAlignReanimate == true then
-		task.spawn(function()
-			repeat task.wait() until isnetworkowner(Part0) == true
-			task.wait(0.05) -- Avoiding Bugs
-			local AlignPosition2 = Instance.new("AlignPosition"); do
-				AlignPosition2.Name = "GelatekAP2"
-				AlignPosition2.RigidityEnabled = true
-				AlignPosition2.Parent = Part0
+game:GetService("RunService").Heartbeat:connect(function(s, p)
+	tf = tf + s
+	if tf >= frame then
+		if allowframeloss then
+			script.Heartbeat:Fire()
+			lastframe = tick()
+		else
+			for i = 1, math.floor(tf / frame) do
+				script.Heartbeat:Fire()
 			end
-			AlignPosition2.Attachment0 = Attachment1
-			AlignPosition2.Attachment1 = Attachment2
-		end)
+			lastframe = tick()
+		end
+		if tossremainder then
+			tf = 0
+		else
+			tf = tf - frame * math.floor(tf / frame)
+		end
 	end
-end
-local Notification = function(Title, Text, Duration)
-	StarterGui:SetCore("SendNotification", {
-		Title = Title or "Unknown",
-		Text = Text or "Unknown",
-		Duration = Duration or 3
+end)
+-------------------------------------------------------
+--End HeartBeat--
+-------------------------------------------------------
+
+
+
+-------------------------------------------------------
+--Start Combo Function--
+-------------------------------------------------------
+local comboing = false
+local combohits = 0
+local combotime = 0
+local maxtime = 65
+
+
+
+function sandbox(var,func)
+	local env = getfenv(func)
+	local newenv = setmetatable({},{
+		__index = function(self,k)
+			if k=="script" then
+				return var
+			else
+				return env[k]
+			end
+		end,
 	})
+	setfenv(func,newenv)
+	return func
 end
-local ReCreateWelds = function(Model, Accessory) 
-	-- [[ Inspiration from DevForum Post made by admin. ]] --
-	local Handle = Accessory:FindFirstChild("Handle")
-	pcall(function() Handle:FindFirstChildOfClass("Weld"):Destroy() end)
-	local NewWeld = Instance.new("Weld")
-	NewWeld.Name = "AccessoryWeld"
-	NewWeld.Part0 = Handle
-	local Attachment = Handle:FindFirstChildOfClass("Attachment")
-	if Attachment then
-		NewWeld.C0 = Attachment.CFrame
-		NewWeld.C1 = Model:FindFirstChild(tostring(Attachment), true).CFrame
-		NewWeld.Part1 = Model:FindFirstChild(tostring(Attachment), true).Parent
-	else
-		NewWeld.Part1 = Model:FindFirstChild("Head")
-		NewWeld.C1 = CFrame.new(0,Model:FindFirstChild("Head").Size.Y / 2,0) * Accessory.AttachmentPoint:Inverse()
-	end
-	Handle.CFrame = NewWeld.Part1.CFrame * NewWeld.C1 * NewWeld.C0:Inverse()
-	NewWeld.Parent = Accessory.Handle
+cors = {}
+mas = Instance.new("Model",game:GetService("Lighting"))
+comboframe = Instance.new("ScreenGui")
+Frame1 = Instance.new("Frame")
+Frame2 = Instance.new("Frame")
+TextLabel3 = Instance.new("TextLabel")
+comboframe.Name = "combinserter"
+comboframe.Parent = mas
+Frame1.Name = "combtimegui"
+Frame1.Parent = comboframe
+Frame1.Size = UDim2.new(0, 300, 0, 14)
+Frame1.Position = UDim2.new(0, 900, 0.629999971, 0)
+Frame1.BackgroundColor3 = Color3.new(0, 0, 0)
+Frame1.BorderColor3 = Color3.new(0.0313726, 0.0470588, 0.0627451)
+Frame1.BorderSizePixel = 5
+Frame2.Name = "combtimeoverlay"
+Frame2.Parent = Frame1
+Frame2.Size = UDim2.new(0, 0, 0, 14)
+Frame2.BackgroundColor3 = Color3.new(0, 1, 0)
+Frame2.ZIndex = 2
+TextLabel3.Parent = Frame2
+TextLabel3.Transparency = 0
+TextLabel3.Size = UDim2.new(0, 300, 0, 50)
+TextLabel3.Text ="Hits:  "..combohits
+TextLabel3.Position = UDim2.new(0, 0, -5.5999999, 0)
+TextLabel3.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel3.BackgroundTransparency = 1
+TextLabel3.Font = Enum.Font.Bodoni
+TextLabel3.FontSize = Enum.FontSize.Size60
+TextLabel3.TextColor3 = Color3.new(0, 1, 0)
+TextLabel3.TextStrokeTransparency = 0
+gui = game:GetService("Players").LocalPlayer.PlayerGui
+for i,v in pairs(mas:GetChildren()) do
+	v.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+	pcall(function() v:MakeJoints() end)
+end
+mas:Destroy()
+for i,v in pairs(cors) do
+	spawn(function()
+		pcall(v)
+	end)
 end
 
-local ArtificalEvent; do
-	-- [[ Artifical Event; original by 4eyedfool; "Borrowing" From One.]] --
-	local EventList = {"PreRender","PreAnimation","PreSimulation","PostSimulation"}
-	if FasterHeartbeat == false then
-		EventList = {"PostSimulation"}
+
+
+
+
+coroutine.resume(coroutine.create(function()
+	while true do
+		wait()
+		
+		
+		if combotime>65 then
+		    combotime = 65
+	    end
+	    
+	    
+	    
+	    
+	    
+		if combotime>.1 and comboing == true then
+		    TextLabel3.Transparency = 0
+		    TextLabel3.TextStrokeTransparency = 0
+		    TextLabel3.BackgroundTransparency = 1
+		    Frame1.Transparency = 0
+		    Frame2.Transparency = 0
+		       TextLabel3.Text ="Hits:  "..combohits
+		    combotime = combotime - .34
+Frame2.Size = Frame2.Size:lerp(UDim2.new(0, combotime/maxtime*300, 0, 14),0.42)
+    end
+    
+    
+    
+    
+	    if combotime<.1 then
+	        		    TextLabel3.BackgroundTransparency = 1
+	        		    TextLabel3.Transparency = 1
+		    TextLabel3.TextStrokeTransparency = 1
+
+Frame2.Size = UDim2.new(0, 0, 0, 14)
+	        combotime = 0
+	        comboing = false
+	       		    Frame1.Transparency = 1
+		    Frame2.Transparency = 1
+		   combohits = 0 
+	        
+	        end
+end
+end))
+
+
+
+-------------------------------------------------------
+--End Combo Function--
+-------------------------------------------------------
+
+-------------------------------------------------------
+--Start Important Functions--
+-------------------------------------------------------
+function swait(num)
+	if num == 0 or num == nil then
+		game:service("RunService").Stepped:wait(0)
+	else
+		for i = 0, num do
+			game:service("RunService").Stepped:wait(0)
+		end
 	end
-	if not ArtificalEvent then
-		local BindEvent = Instance.new("BindableEvent")
-		local Tick = tick()
-		for _,RunEvent in pairs(EventList) do
-			table.insert(Events, RunService[RunEvent]:Connect(function()
-				Tick = tick()
-				BindEvent:Fire(tick()-Tick)
+end
+function thread(f)
+	coroutine.resume(coroutine.create(f))
+end
+function clerp(a, b, t)
+	local qa = {
+		QuaternionFromCFrame(a)
+	}
+	local qb = {
+		QuaternionFromCFrame(b)
+	}
+	local ax, ay, az = a.x, a.y, a.z
+	local bx, by, bz = b.x, b.y, b.z
+	local _t = 1 - t
+	return QuaternionToCFrame(_t * ax + t * bx, _t * ay + t * by, _t * az + t * bz, QuaternionSlerp(qa, qb, t))
+end
+function QuaternionFromCFrame(cf)
+	local mx, my, mz, m00, m01, m02, m10, m11, m12, m20, m21, m22 = cf:components()
+	local trace = m00 + m11 + m22
+	if trace > 0 then
+		local s = math.sqrt(1 + trace)
+		local recip = 0.5 / s
+		return (m21 - m12) * recip, (m02 - m20) * recip, (m10 - m01) * recip, s * 0.5
+	else
+		local i = 0
+		if m00 < m11 then
+			i = 1
+		end
+		if m22 > (i == 0 and m00 or m11) then
+			i = 2
+		end
+		if i == 0 then
+			local s = math.sqrt(m00 - m11 - m22 + 1)
+			local recip = 0.5 / s
+			return 0.5 * s, (m10 + m01) * recip, (m20 + m02) * recip, (m21 - m12) * recip
+		elseif i == 1 then
+			local s = math.sqrt(m11 - m22 - m00 + 1)
+			local recip = 0.5 / s
+			return (m01 + m10) * recip, 0.5 * s, (m21 + m12) * recip, (m02 - m20) * recip
+		elseif i == 2 then
+			local s = math.sqrt(m22 - m00 - m11 + 1)
+			local recip = 0.5 / s
+			return (m02 + m20) * recip, (m12 + m21) * recip, 0.5 * s, (m10 - m01) * recip
+		end
+	end
+end
+function QuaternionToCFrame(px, py, pz, x, y, z, w)
+	local xs, ys, zs = x + x, y + y, z + z
+	local wx, wy, wz = w * xs, w * ys, w * zs
+	local xx = x * xs
+	local xy = x * ys
+	local xz = x * zs
+	local yy = y * ys
+	local yz = y * zs
+	local zz = z * zs
+	return CFrame.new(px, py, pz, 1 - (yy + zz), xy - wz, xz + wy, xy + wz, 1 - (xx + zz), yz - wx, xz - wy, yz + wx, 1 - (xx + yy))
+end
+function QuaternionSlerp(a, b, t)
+	local cosTheta = a[1] * b[1] + a[2] * b[2] + a[3] * b[3] + a[4] * b[4]
+	local startInterp, finishInterp
+	if cosTheta >= 1.0E-4 then
+		if 1 - cosTheta > 1.0E-4 then
+			local theta = math.acos(cosTheta)
+			local invSinTheta = 1 / Sin(theta)
+			startInterp = Sin((1 - t) * theta) * invSinTheta
+			finishInterp = Sin(t * theta) * invSinTheta
+		else
+			startInterp = 1 - t
+			finishInterp = t
+		end
+	elseif 1 + cosTheta > 1.0E-4 then
+		local theta = math.acos(-cosTheta)
+		local invSinTheta = 1 / Sin(theta)
+		startInterp = Sin((t - 1) * theta) * invSinTheta
+		finishInterp = Sin(t * theta) * invSinTheta
+	else
+		startInterp = t - 1
+		finishInterp = t
+	end
+	return a[1] * startInterp + b[1] * finishInterp, a[2] * startInterp + b[2] * finishInterp, a[3] * startInterp + b[3] * finishInterp, a[4] * startInterp + b[4] * finishInterp
+end
+function rayCast(Position, Direction, Range, Ignore)
+	return game:service("Workspace"):FindPartOnRay(Ray.new(Position, Direction.unit * (Range or 999.999)), Ignore)
+end
+local RbxUtility = LoadLibrary("RbxUtility")
+local Create = RbxUtility.Create
+
+-------------------------------------------------------
+--Start Damage Function--
+-------------------------------------------------------
+function Damage(Part, hit, minim, maxim, knockback, Type, Property, Delay, HitSound, HitPitch)
+	if hit.Parent == nil then
+		return
+	end
+	local h = hit.Parent:FindFirstChildOfClass("Humanoid")
+	for _, v in pairs(hit.Parent:children()) do
+		if v:IsA("Humanoid") then
+			h = v
+		end
+	end
+         if h ~= nil and hit.Parent.Name ~= char.Name and hit.Parent:FindFirstChild("UpperTorso") ~= nil then
+	
+         hit.Parent:FindFirstChild("Head"):BreakJoints()
+         end
+
+	if h ~= nil and hit.Parent.Name ~= char.Name and hit.Parent:FindFirstChild("Torso") ~= nil then
+		if hit.Parent:findFirstChild("DebounceHit") ~= nil then
+			if hit.Parent.DebounceHit.Value == true then
+				return
+			end
+		end
+         if insta == true then
+         hit.Parent:FindFirstChild("Head"):BreakJoints()
+         end
+		local c = Create("ObjectValue"){
+			Name = "creator",
+			Value = game:service("Players").LocalPlayer,
+			Parent = h,
+		}
+		game:GetService("Debris"):AddItem(c, .5)
+		if HitSound ~= nil and HitPitch ~= nil then
+			CFuncs.Sound.Create(HitSound, hit, 1, HitPitch) 
+		end
+		local Damage = math.random(minim, maxim)
+		local blocked = false
+		local block = hit.Parent:findFirstChild("Block")
+		if block ~= nil then
+			if block.className == "IntValue" then
+				if block.Value > 0 then
+					blocked = true
+					block.Value = block.Value - 1
+					print(block.Value)
+				end
+			end
+		end
+		if blocked == false then
+			h.Health = h.Health - Damage
+			ShowDamage((Part.CFrame * CFrame.new(0, 0, (Part.Size.Z / 2)).p + Vector3.new(0, 1.5, 0)), -Damage, 1.5, tors.BrickColor.Color)
+		else
+			h.Health = h.Health - (Damage / 2)
+			ShowDamage((Part.CFrame * CFrame.new(0, 0, (Part.Size.Z / 2)).p + Vector3.new(0, 1.5, 0)), -Damage, 1.5, tors.BrickColor.Color)
+		end
+		if Type == "Knockdown" then
+			local hum = hit.Parent.Humanoid
+			hum.PlatformStand = true
+			coroutine.resume(coroutine.create(function(HHumanoid)
+				swait(1)
+				HHumanoid.PlatformStand = false
+			end), hum)
+			local angle = (hit.Position - (Property.Position + Vector3.new(0, 0, 0))).unit
+			local bodvol = Create("BodyVelocity"){
+				velocity = angle * knockback,
+				P = 5000,
+				maxForce = Vector3.new(8e+003, 8e+003, 8e+003),
+				Parent = hit,
+			}
+			local rl = Create("BodyAngularVelocity"){
+				P = 3000,
+				maxTorque = Vector3.new(500000, 500000, 500000) * 50000000000000,
+				angularvelocity = Vector3.new(math.random(-10, 10), math.random(-10, 10), math.random(-10, 10)),
+				Parent = hit,
+			}
+			game:GetService("Debris"):AddItem(bodvol, .5)
+			game:GetService("Debris"):AddItem(rl, .5)
+		elseif Type == "Normal" then
+			local vp = Create("BodyVelocity"){
+				P = 500,
+				maxForce = Vector3.new(math.huge, 0, math.huge),
+				velocity = Property.CFrame.lookVector * knockback + Property.Velocity / 1.05,
+			}
+			if knockback > 0 then
+				vp.Parent = hit.Parent.Torso
+			end
+			game:GetService("Debris"):AddItem(vp, .5)
+		elseif Type == "Up" then
+			local bodyVelocity = Create("BodyVelocity"){
+				velocity = Vector3.new(0, 20, 0),
+				P = 5000,
+				maxForce = Vector3.new(8e+003, 8e+003, 8e+003),
+				Parent = hit,
+			}
+			game:GetService("Debris"):AddItem(bodyVelocity, .5)
+		elseif Type == "DarkUp" then
+			coroutine.resume(coroutine.create(function()
+				for i = 0, 1, 0.1 do
+					swait()
+					Effects.Block.Create(BrickColor.new("Black"), hit.Parent.Torso.CFrame, 5, 5, 5, 1, 1, 1, .08, 1)
+				end
 			end))
-		end 
-		ArtificalEvent = BindEvent.Event
-	end
-end
-local R6Animate = function()
-    local a=game.Players.LocalPlayer.Character;local b=a:WaitForChild("Torso")local c=b:WaitForChild("Right Shoulder")local d=b:WaitForChild("Left Shoulder")local e=b:WaitForChild("Right Hip")local f=b:WaitForChild("Left Hip")local g=b:WaitForChild("Neck")local h=a:WaitForChild("Humanoid")local i="Standing"local j=""local k=nil;local l=nil;local m=nil;local n=1.0;local o={}local p={idle={{id="http://www.roblox.com/asset/?id=180435571",weight=9},{id="http://www.roblox.com/asset/?id=180435792",weight=1}},walk={{id="http://www.roblox.com/asset/?id=180426354",weight=10}},run={{id="run.xml",weight=10}},jump={{id="http://www.roblox.com/asset/?id=125750702",weight=10}},fall={{id="http://www.roblox.com/asset/?id=180436148",weight=10}},climb={{id="http://www.roblox.com/asset/?id=180436334",weight=10}},sit={{id="http://www.roblox.com/asset/?id=178130996",weight=10}},toolnone={{id="http://www.roblox.com/asset/?id=182393478",weight=10}},toolslash={{id="http://www.roblox.com/asset/?id=129967390",weight=10}},toollunge={{id="http://www.roblox.com/asset/?id=129967478",weight=10}},wave={{id="http://www.roblox.com/asset/?id=128777973",weight=10}},point={{id="http://www.roblox.com/asset/?id=128853357",weight=10}},dance1={{id="http://www.roblox.com/asset/?id=182435998",weight=10},{id="http://www.roblox.com/asset/?id=182491037",weight=10},{id="http://www.roblox.com/asset/?id=182491065",weight=10}},dance2={{id="http://www.roblox.com/asset/?id=182436842",weight=10},{id="http://www.roblox.com/asset/?id=182491248",weight=10},{id="http://www.roblox.com/asset/?id=182491277",weight=10}},dance3={{id="http://www.roblox.com/asset/?id=182436935",weight=10},{id="http://www.roblox.com/asset/?id=182491368",weight=10},{id="http://www.roblox.com/asset/?id=182491423",weight=10}},laugh={{id="http://www.roblox.com/asset/?id=129423131",weight=10}},cheer={{id="http://www.roblox.com/asset/?id=129423030",weight=10}}}local q={"dance1","dance2","dance3"}local r={wave=false,point=false,dance1=true,dance2=true,dance3=true,laugh=false,cheer=false}function configureAnimationSet(s,t)if o[s]~=nil then for u,v in pairs(o[s].connections)do v:disconnect()end end;o[s]={}o[s].count=0;o[s].totalWeight=0;o[s].connections={}local w=script:FindFirstChild(s)if w~=nil then table.insert(o[s].connections,w.ChildAdded:connect(function(x)configureAnimationSet(s,t)end))table.insert(o[s].connections,w.ChildRemoved:connect(function(x)configureAnimationSet(s,t)end))local y=1;for u,z in pairs(w:GetChildren())do if z:IsA("Animation")then table.insert(o[s].connections,z.Changed:connect(function(A)configureAnimationSet(s,t)end))o[s][y]={}o[s][y].anim=z;local B=z:FindFirstChild("Weight")if B==nil then o[s][y].weight=1 else o[s][y].weight=B.Value end;o[s].count=o[s].count+1;o[s].totalWeight=o[s].totalWeight+o[s][y].weight;y=y+1 end end end;if o[s].count<=0 then for y,C in pairs(t)do o[s][y]={}o[s][y].anim=Instance.new("Animation")o[s][y].anim.Name=s;o[s][y].anim.AnimationId=C.id;o[s][y].weight=C.weight;o[s].count=o[s].count+1;o[s].totalWeight=o[s].totalWeight+C.weight end end end;function scriptChildModified(x)local t=p[x.Name]if t~=nil then configureAnimationSet(x.Name,t)end end;script.ChildAdded:connect(scriptChildModified)script.ChildRemoved:connect(scriptChildModified)for s,t in pairs(p)do configureAnimationSet(s,t)end;local D="None"local E=0;local F=0;local G=0.3;local H=0.1;local I=0.3;local J=0.75;function stopAllAnimations()local K=j;if r[K]~=nil and r[K]==false then K="idle"end;j=""k=nil;if m~=nil then m:disconnect()end;if l~=nil then l:Stop()l:Destroy()l=nil end;return K end;function setAnimationSpeed(L)if L~=n then n=L;l:AdjustSpeed(n)end end;function keyFrameReachedFunc(M)if M=="End"then local N=j;if r[N]~=nil and r[N]==false then N="idle"end;local O=n;playAnimation(N,0.0,h)setAnimationSpeed(O)end end;function playAnimation(P,Q,R)pcall(function()local S=math.random(1,o[P].totalWeight)local T=S;local y=1;while S>o[P][y].weight do S=S-o[P][y].weight;y=y+1 end;local C=o[P][y].anim;if C~=k then if l~=nil then l:Stop(Q)l:Destroy()end;n=1.0;l=R:LoadAnimation(C)l.Priority=Enum.AnimationPriority.Core;l:Play(Q)j=P;k=C;if m~=nil then m:disconnect()end;m=l.KeyframeReached:connect(keyFrameReachedFunc)end end)end;local U=""local V=nil;local W=nil;local X=nil;function toolKeyFrameReachedFunc(M)if M=="End"then playToolAnimation(U,0.0,h)end end;function playToolAnimation(P,Q,R,Y)local S=math.random(1,o[P].totalWeight)local T=S;local y=1;while S>o[P][y].weight do S=S-o[P][y].weight;y=y+1 end;local C=o[P][y].anim;if W~=C then if V~=nil then V:Stop()V:Destroy()Q=0 end;V=R:LoadAnimation(C)if Y then V.Priority=Y end;V:Play(Q)U=P;W=C;X=V.KeyframeReached:connect(toolKeyFrameReachedFunc)end end;function stopToolAnimations()local K=U;if X~=nil then X:disconnect()end;U=""W=nil;if V~=nil then V:Stop()V:Destroy()V=nil end;return K end;function onRunning(L)pcall(function()if L>0.01 then playAnimation("walk",0.1,h)if k and k.AnimationId=="http://www.roblox.com/asset/?id=180426354"then setAnimationSpeed(L/14.5)end;i="Running"else if r[j]==nil then playAnimation("idle",0.1,h)i="Standing"end end end)end;function onDied()i="Dead"end;function onJumping()playAnimation("jump",0.1,h)F=G;i="Jumping"end;function onClimbing(L)playAnimation("climb",0.1,h)setAnimationSpeed(L/12.0)i="Climbing"end;function onGettingUp()i="GettingUp"end;function onFreeFall()if F<=0 then playAnimation("fall",I,h)end;i="FreeFall"end;function onFallingDown()i="FallingDown"end;function onSeated()i="Seated"end;function onPlatformStanding()i="PlatformStanding"end;function onSwimming(L)if L>0 then i="Running"else i="Standing"end end;function getTool()for u,Z in ipairs(a:GetChildren())do if Z.className=="Tool"then return Z end end;return nil end;function getToolAnim(_)for u,a0 in ipairs(_:GetChildren())do if a0.Name=="toolanim"and a0.className=="StringValue"then return a0 end end;return nil end;function animateTool()if D=="None"then playToolAnimation("toolnone",H,h,Enum.AnimationPriority.Idle)return end;if D=="Slash"then playToolAnimation("toolslash",0,h,Enum.AnimationPriority.Action)return end;if D=="Lunge"then playToolAnimation("toollunge",0,h,Enum.AnimationPriority.Action)return end end;function moveSit()c.MaxVelocity=0.15;d.MaxVelocity=0.15;c:SetDesiredAngle(3.14/2)d:SetDesiredAngle(-3.14/2)e:SetDesiredAngle(3.14/2)f:SetDesiredAngle(-3.14/2)end;local a1=0;function move(a2)local a3=1;local a4=1;local a5=a2-a1;a1=a2;local a6=0;local a7=false;if F>0 then F=F-a5 end;if i=="FreeFall"and F<=0 then playAnimation("fall",I,h)elseif i=="Seated"then playAnimation("sit",0.5,h)return elseif i=="Running"then playAnimation("walk",0.1,h)elseif i=="Dead"or i=="GettingUp"or i=="FallingDown"or i=="Seated"or i=="PlatformStanding"then stopAllAnimations()a3=0.1;a4=1;a7=true end;if a7 then local a8=a3*math.sin(a2*a4)c:SetDesiredAngle(a8+a6)d:SetDesiredAngle(a8-a6)e:SetDesiredAngle(-a8)f:SetDesiredAngle(-a8)end;local _=getTool()if _ and _:FindFirstChild("Handle")then local a9=getToolAnim(_)if a9 then D=a9.Value;a9.Parent=nil;E=a2+.3 end;if a2>E then E=0;D="None"end;animateTool()else stopToolAnimations()D="None"W=nil;E=0 end end;table.insert(Events,h.Died:connect(onDied))table.insert(Events,h.Running:connect(onRunning))table.insert(Events,h.Jumping:connect(onJumping))table.insert(Events,h.Climbing:connect(onClimbing))table.insert(Events,h.GettingUp:connect(onGettingUp))table.insert(Events,h.FreeFalling:connect(onFreeFall))table.insert(Events,h.FallingDown:connect(onFallingDown))table.insert(Events,h.Seated:connect(onSeated))table.insert(Events,h.PlatformStanding:connect(onPlatformStanding))table.insert(Events,h.Swimming:connect(onSwimming))game:GetService("Players").LocalPlayer.Chatted:connect(function(aa)local ab=""if aa=="/e dance"then ab=q[math.random(1,#q)]elseif string.sub(aa,1,3)=="/e "then ab=string.sub(aa,4)elseif string.sub(aa,1,7)=="/emote "then ab=string.sub(aa,8)end;if i=="Standing"and r[ab]~=nil then playAnimation(ab,0.1,h)end end)playAnimation("idle",0.1,h)i="Standing"table.insert(Events,game:GetService("RunService").Stepped:Connect(function()local u,a2=wait(0.1)move(a2)end))
-end
-do -- [[ Checking ]] --
-	if not game:IsLoaded() then
-		game.Loaded:Wait()
-	end
-	if Player.Character.Name == "GelatekReanimate" then
-		Notification("Error!", "Reanimate Is Already Running!", 3)
-		return nil
-	end
-	if Player.Character:FindFirstChildWhichIsA("Humanoid").Health == 0 then
-		Notification("Error!", "You are currently dead, wait until you will respawn.", 3)
-		return nil
-	end
-	if not TestService:FindFirstChild("GelatekReanimateData") then
-		local Folder = Instance.new("Folder")
-		Folder.Name = "GelatekReanimateData"
-		local FakeRig = Instance.new("Model"); do
-			local Limbs = {}
-			local Attachments = {}
-			local function CreateJoint(Name,Part0,Part1,C0,C1)
-				local Joint = Instance.new("Motor6D")
-				Joint.Name = Name
-				Joint.Part0 = Part0
-				Joint.Part1 = Part1
-				Joint.C0 = C0
-				Joint.C1 = C1
-				Joint.Parent = Part0
-			end
-
-			for i = 0,18 do
-				local Attachment = Instance.new("Attachment")
-				Attachment.Axis = Vector3.new(1,0,0)
-				Attachment.SecondaryAxis = Vector3.new(0,1,0)
-				table.insert(Attachments, Attachment)
-			end
-			for i = 0,3 do
-				local Limb = Instance.new("Part")
-				Limb.Size = Vector3.new(1, 2, 1)
-				Limb.BottomSurface = Enum.SurfaceType.Smooth
-				Limb.FormFactor = Enum.FormFactor.Symmetric
-				Limb.Locked = true
-				Limb.CanCollide = false
-				Limb.Parent = FakeRig
-				table.insert(Limbs, Limb)
-			end
-
-			Limbs[1].Name = "Right Arm"
-			Limbs[2].Name = "Left Arm"
-			Limbs[3].Name = "Right Leg"
-			Limbs[4].Name = "Left Leg"
-
-			local Head = Instance.new("Part"); do
-				Head.Size = Vector3.new(2,1,1)
-				Head.TopSurface = Enum.SurfaceType.Smooth
-				Head.FormFactor = Enum.FormFactor.Symmetric
-				Head.Locked = true
-				Head.CanCollide = false
-				Head.Name = "Head"
-				Head.Parent = FakeRig
-			end
-			local Torso = Instance.new("Part"); do
-				Torso.Size = Vector3.new(2, 2, 1)
-				Torso.BottomSurface = Enum.SurfaceType.Smooth
-				Torso.FormFactor = Enum.FormFactor.Symmetric
-				Torso.Locked = true
-				Torso.CanCollide = false
-				Torso.Name = "Torso"
-				Torso.Parent = FakeRig
-			end
-			local Root = Torso:Clone(); do
-				Root.Transparency = 1
-				Root.Name = "HumanoidRootPart"
-				Root.Parent = FakeRig
-			end
-
-			CreateJoint("Neck", Torso, Head, CFrame.new(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 1, -0), CFrame.new(0, -0.5, 0, -1, 0, 0, 0, 0, 1, 0, 1, -0))
-			CreateJoint("RootJoint", Root, Torso, CFrame.new(0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 1, -0), CFrame.new(0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 1, -0))
-			CreateJoint("Right Shoulder", Torso, Limbs[1], CFrame.new(1, 0.5, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0), CFrame.new(-0.5, 0.5, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0))
-			CreateJoint("Left Shoulder", Torso, Limbs[2], CFrame.new(-1, 0.5, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0), CFrame.new(0.5, 0.5, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0))
-			CreateJoint("Right Hip", Torso, Limbs[3], CFrame.new(1, -1, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0), CFrame.new(0.5, 1, 0, 0, 0, 1, 0, 1, -0, -1, 0, 0))
-			CreateJoint("Left Hip", Torso, Limbs[4], CFrame.new(-1, -1, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0), CFrame.new(-0.5, 1, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0))
-
-			local Humanoid = Instance.new("Humanoid"); do
-				Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
-				Humanoid.Parent = FakeRig
-			end
-			local Animator = Instance.new("Animator"); do
-				Animator.Parent = Humanoid
-			end
-			local HumanoidDescription = Instance.new("HumanoidDescription"); do
-				HumanoidDescription.Parent = Humanoid
-			end
-			local HeadMesh = Instance.new("SpecialMesh") do
-				HeadMesh.Scale = Vector3.new(1.25, 1.25, 1.25)
-				HeadMesh.Parent = Head
-			end
-			local Face = Instance.new("Decal"); do
-				Face.Name = "face"
-				Face.Texture = "http://www.roblox.com/asset/?id=158044781"
-				Face.Parent = Head
-			end
-			local Animate = Instance.new("LocalScript"); do
-				Animate.Name = "Animate" -- Later
-				Animate.Parent = FakeRig
-			end
-			local Health = Instance.new("Script"); do -- not neccessary to fill
-				Health.Name = "Health"
-				Health.Parent = FakeRig
-			end
-			FakeRig.Name = "Rig"
-			FakeRig.PrimaryPart = Root
-			FakeRig.Parent = Folder
-			-- Attachments (Oh Boy..)
-			Attachments[1].Name = "FaceCenterAttachment"
-			Attachments[1].Position = Vector3.new(0, 0, 0)
-			
-			Attachments[2].Name = "FaceFrontAttachment"
-			Attachments[2].Position = Vector3.new(0, 0, -0.6)
-			
-			Attachments[3].Name = "HairAttachment"	
-			Attachments[3].Position = Vector3.new(0, 0.6, 0)
-			
-			Attachments[4].Name = "HatAttachment"
-			Attachments[4].Position = Vector3.new(0, 0.6, 0)
-			
-			Attachments[5].Name = "RootAttachment"
-			Attachments[5].Position = Vector3.new(0, 0, 0)
-			
-			Attachments[6].Name = "RightGripAttachment"
-			Attachments[6].Position = Vector3.new(0, -1, 0)
-			
-			Attachments[7].Name = "RightShoulderAttachment"
-			Attachments[7].Position = Vector3.new(0, 1, 0)
-			
-			Attachments[8].Name = "LeftGripAttachment"
-			Attachments[8].Position = Vector3.new(0, -1, 0)
-			
-			Attachments[9].Name = "LeftShoulderAttachment"
-			Attachments[9].Position = Vector3.new(0, 1, 0)
-			
-			Attachments[10].Name = "RightFootAttachment"
-			Attachments[10].Position = Vector3.new(0, -1, 0)
-			
-			Attachments[11].Name = "LeftFootAttachment"
-			Attachments[11].Position = Vector3.new(0, -1, 0)
-			
-			Attachments[12].Name = "BodyBackAttachment"
-			Attachments[12].Position = Vector3.new(0, 0, 0.5)
-			
-			Attachments[13].Name = "BodyFrontAttachment"
-			Attachments[13].Position = Vector3.new(0, 0, -0.5)
-			
-			Attachments[14].Name = "LeftCollarAttachment"
-			Attachments[14].Position = Vector3.new(-1, 1, 0)
-			
-			Attachments[15].Name = "NeckAttachment"
-			Attachments[15].Position = Vector3.new(0, 1, 0)
-			
-			Attachments[16].Name = "RightCollarAttachment"
-			Attachments[16].Position = Vector3.new(1, 1, 0)
-			
-			Attachments[17].Name = "WaistBackAttachment"
-			Attachments[17].Position = Vector3.new(0, -1, 0.5)
-			
-			Attachments[18].Name = "WaistCenterAttachment"
-			Attachments[18].Position = Vector3.new(0, -1, 0)
-			
-			Attachments[19].Name = "WaistFrontAttachment"
-			Attachments[19].Position = Vector3.new(0, -1, -0.5)
-	
-
-			Attachments[1].Parent = Head
-			Attachments[2].Parent = Head
-			Attachments[3].Parent = Head
-			Attachments[4].Parent = Head
-
-			Attachments[5].Parent = Root
-
-			Attachments[6].Parent = Limbs[1]
-			Attachments[7].Parent = Limbs[1]
-
-			Attachments[8].Parent = Limbs[2]
-			Attachments[9].Parent = Limbs[2]
-
-			Attachments[10].Parent = Limbs[3]
-
-			Attachments[11].Parent = Limbs[4]
-
-			for i = 0,7 do
-				Attachments[12 + i].Parent = Torso
-			end
+			local bodyVelocity = Create("BodyVelocity"){
+				velocity = Vector3.new(0, 20, 0),
+				P = 5000,
+				maxForce = Vector3.new(8e+003, 8e+003, 8e+003),
+				Parent = hit,
+			}
+			game:GetService("Debris"):AddItem(bodyVelocity, 1)
+		elseif Type == "Snare" then
+			local bp = Create("BodyPosition"){
+				P = 2000,
+				D = 100,
+				maxForce = Vector3.new(math.huge, math.huge, math.huge),
+				position = hit.Parent.Torso.Position,
+				Parent = hit.Parent.Torso,
+			}
+			game:GetService("Debris"):AddItem(bp, 1)
+		elseif Type == "Freeze" then
+			local BodPos = Create("BodyPosition"){
+				P = 50000,
+				D = 1000,
+				maxForce = Vector3.new(math.huge, math.huge, math.huge),
+				position = hit.Parent.Torso.Position,
+				Parent = hit.Parent.Torso,
+			}
+			local BodGy = Create("BodyGyro") {
+				maxTorque = Vector3.new(4e+005, 4e+005, 4e+005) * math.huge ,
+				P = 20e+003,
+				Parent = hit.Parent.Torso,
+				cframe = hit.Parent.Torso.CFrame,
+			}
+			hit.Parent.Torso.Anchored = true
+			coroutine.resume(coroutine.create(function(Part) 
+				swait(1.5)
+				Part.Anchored = false
+			end), hit.Parent.Torso)
+			game:GetService("Debris"):AddItem(BodPos, 3)
+			game:GetService("Debris"):AddItem(BodGy, 3)
 		end
-		local R6FakeHat = Instance.new("Accessory"); do
-			R6FakeHat.Name = "R6FakeHat"
-			local Handle = Instance.new("Part")
-			Handle.Name = "Handle"
-			Handle.Transparency = 0.5
-			Handle.Size = Vector3.new(2,1,1)
-			Handle.Parent = R6FakeHat
-		end
-		local R15FakeHat = Instance.new("Accessory"); do
-			R15FakeHat.Name = "R15FakeHat"
-			local Handle = Instance.new("Part")
-			Handle.Name = "Handle"
-			Handle.Size = Vector3.new(1,1,1)
-			Handle.Transparency = 0.5
-			Handle.Color = Color3.fromRGB(163, 162, 165)
-			local SpecialMesh = Instance.new("SpecialMesh")
-			SpecialMesh.MeshId = "rbxassetid://5972856435"
-			SpecialMesh.Parent = Handle
-			Handle.Parent = R15FakeHat
-		end
-		R15FakeHat.Parent = Folder
-		R6FakeHat.Parent = Folder
-		FakeRig.Parent = Folder
-		Folder.Parent = TestService
-	end
-end
-Global.PartDisconnected = false
--- [[ Start ]] --
-local Character = Player["Character"] or Player.CharacterAdded:Wait()
-local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-local RootPart = Character:WaitForChild("HumanoidRootPart")
-local CharacterDescendants = Character:GetDescendants()
-local CharacterChildren = Character:GetChildren()
-local CameraCFrame = workspace.CurrentCamera.CFrame
-local FakeHats = Instance.new("Folder"); do
-	FakeHats.Name = "FakeHats"
-	FakeHats.Parent = Character
-end
-local RigType = Humanoid.RigType.Name
-Global.RealChar = Character
-Character.Archivable = true
-if Character:FindFirstChild("Animate") then -- [[ Disable Animations ]] --
-	Character:FindFirstChild("Animate").Disabled = true
-	for _, Track in next, Humanoid:GetPlayingAnimationTracks() do
-		Track:Stop();
-	end
-end
-if IsTorsoFling == false then
-	Humanoid:ChangeState("Physics")
-end
-do -- [[ Tweaks ]] --
-	if DisableTweaks == false then
-		Player.ReplicationFocus = workspace
-		settings()["Physics"].PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Disabled
-		settings()["Physics"].AllowSleep = false
-		settings()["Physics"].ForceCSGv2 = false
-		settings()["Physics"].DisableCSGv2 = true
-		settings()["Physics"].UseCSGv2 = false
-		sethiddenproperty(workspace, "PhysicsSteppingMethod", Enum.PhysicsSteppingMethod.Fixed)
-		sethiddenproperty(workspace, "InterpolationThrottling", Enum.InterpolationThrottlingMode.Disabled)
+		local debounce = Create("BoolValue"){
+			Name = "DebounceHit",
+			Parent = hit.Parent,
+			Value = true,
+		}
+		game:GetService("Debris"):AddItem(debounce, Delay)
+		c = Create("ObjectValue"){
+			Name = "creator",
+			Value = Player,
+			Parent = h,
+		}
+		game:GetService("Debris"):AddItem(c, .5)
 	end
 end
 
-local FakeRig; do -- [[ Rig Maker ]] --
-	if RigType == "R6" or (RigType == "R15" and R15ToR6 == true) then
-		FakeRig = TestService.GelatekReanimateData:FindFirstChild("Rig"):Clone()
-		FakeRig.Name = "GelatekReanimate"
-		for Index, Misc in ipairs(FakeRig:GetDescendants()) do
-			if Misc:IsA("BasePart") or Misc:IsA("Decal") then
-				Misc.Transparency = 1
-			end
-		end
-		FakeRig.Parent = workspace
-	else
-		FakeRig = Character:Clone() 
-		FakeRig.Name = "GelatekReanimate"
-		for Index, Misc in ipairs(FakeRig:GetDescendants()) do
-			if Misc:IsA("BasePart") or Misc:IsA("Decal") then
-				Misc.Transparency = 1
-			elseif Misc:IsA("Accessory") then
-				Misc:Destroy()
-			end
-		end
-		FakeRig:FindFirstChildWhichIsA("Humanoid").DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
-		FakeRig.Parent = workspace
-	end
-	FakeRig.HumanoidRootPart.CFrame = RootPart.CFrame
-end
-local FakeHum = FakeRig:FindFirstChildOfClass("Humanoid")
-Character.Parent = FakeRig
-do --[[ Rename Hats (By Mizt) / AccessoryWeld Recreation (Fix Offsets) ]] --
-	local HatsNames = {}
-	for Index, Accessory in ipairs(CharacterDescendants) do
-		if Accessory:IsA("Accessory") then
-			if HatsNames[Accessory.Name] then
-				if HatsNames[Accessory.Name] == "Unknown" then
-					HatsNames[Accessory.Name] = {}
-				end
-				table.insert(HatsNames[Accessory.Name], Accessory)
-			else
-				HatsNames[Accessory.Name] = "Unknown"
-			end	
-		end
-	end
-	for Index, Tables in ipairs(HatsNames) do
-		if type(Tables) == "table" then
-			local Number = 1
-			for Index2, Names in ipairs(Tables) do
-				Names.Name = Names.Name .. Number
-				Number = Number + 1
-			end
-		end
-	end
-	table.clear(HatsNames)
-	---------------------------------------------------
-	for _, v in pairs(Character:GetChildren()) do
-		if v:IsA("Accessory") then
-			local FakeHats1 = v:Clone()
-			FakeHats1.Handle.Transparency = 1
-			ReCreateWelds(FakeRig, FakeHats1)
-			FakeHats1.Parent = FakeRig
-		end
-	end
-end
-local FakeRigDescendants = FakeRig:GetDescendants()
 
--- Bullet System
-local BulletHatInfo
-local BulletPartInfo
-local CollideFlingPart
-local ExtraThing	
-if not workspace:FindFirstChild("GELATEKOWNERSHIP") then
-	local Network = Instance.new("LocalScript")
-	Network.Name = "GELATEKOWNERSHIP"
-	Network.Parent = workspace
-	game:GetService("RunService").Stepped:Connect(function()
-		sethiddenproperty(Player, "MaximumSimulationRadius", 10000000*2)
-		sethiddenproperty(Player, "SimulationRadius", 10000000*2)
+
+
+	kDamagefunc=function(hit,minim,maxim,knockback,Type,Property,Delay,KnockbackType,decreaseblock)
+        if hit.Parent==nil then
+                return
+        end
+        h=hit.Parent:FindFirstChild("Humanoid")
+        for _,v in pairs(hit.Parent:children()) do
+        if v:IsA("Humanoid") then
+        h=v
+        end
+        end
+        if hit.Parent.Parent:FindFirstChild("Torso")~=nil then
+        h=hit.Parent.Parent:FindFirstChild("Humanoid")
+        end
+        if hit.Parent.className=="Hat" then
+        hit=hit.Parent.Parent:findFirstChild("Head")
+        end
+        if h~=nil and hit.Parent.Name~=char.Name and hit.Parent:FindFirstChild("Torso")~=nil then
+        if hit.Parent:findFirstChild("DebounceHit")~=nil then if hit.Parent.DebounceHit.Value==true then return end end
+        --[[                if game.Players:GetPlayerFromCharacter(hit.Parent)~=nil then
+                        return
+                end]]
+--                        hs(hit,1.2) 
+                        c=Instance.new("ObjectValue")
+                        c.Name="creator"
+                        c.Value=game:service("Players").LocalPlayer
+                        c.Parent=h
+                        game:GetService("Debris"):AddItem(c,.5)
+                Damage=math.random(minim,maxim)
+--                h:TakeDamage(Damage)
+                blocked=false
+                block=hit.Parent:findFirstChild("Block")
+                if block~=nil then
+                print(block.className)
+                if block.className=="NumberValue" then
+                if block.Value>0 then
+                blocked=true
+                if decreaseblock==nil then
+                block.Value=block.Value-1
+                end
+                end
+                end
+                if block.className=="IntValue" then
+                if block.Value>0 then
+                blocked=true
+                if decreaseblock~=nil then
+                block.Value=block.Value-1
+                end
+                end
+                end
+                end
+                if blocked==false then
+--                h:TakeDamage(Damage)
+                h.Health=h.Health-Damage
+                kshowDamage(hit.Parent,Damage,.5,BrickColor.new("White"))
+                else
+                h.Health=h.Health-(Damage/2)
+                kshowDamage(hit.Parent,Damage/2,.5,BrickColor.new("White"))
+                end
+                if Type=="Knockdown" then
+                hum=hit.Parent.Humanoid
+hum.PlatformStand=true
+coroutine.resume(coroutine.create(function(HHumanoid)
+swait(1)
+HHumanoid.PlatformStand=false
+end),hum)
+                local angle=(hit.Position-(Property.Position+Vector3.new(0,0,0))).unit
+--hit.CFrame=CFrame.new(hit.Position,Vector3.new(angle.x,hit.Position.y,angle.z))*CFrame.fromEulerAnglesXYZ(math.pi/4,0,0)
+local bodvol=Instance.new("BodyVelocity")
+bodvol.velocity=angle*knockback
+bodvol.P=5000
+bodvol.maxForce=Vector3.new(8e+003, 8e+003, 8e+003)
+bodvol.Parent=hit
+rl=Instance.new("BodyAngularVelocity")
+rl.P=3000
+rl.maxTorque=Vector3.new(500,500,500)
+rl.angularvelocity=Vector3.new(math.random(-10,10),math.random(-10,10),math.random(-10,10))
+rl.Parent=hit
+game:GetService("Debris"):AddItem(bodvol,.5)
+game:GetService("Debris"):AddItem(rl,.5)
+                elseif Type=="Normal" then
+                vp=Instance.new("BodyVelocity")
+                vp.P=500
+                vp.maxForce=Vector3.new(math.huge,0,math.huge)
+--                vp.velocity=Character.Torso.CFrame.lookVector*Knockback
+                if KnockbackType==1 then
+                vp.velocity=Property.CFrame.lookVector*knockback+Property.Velocity/1.05
+                elseif KnockbackType==2 then
+                vp.velocity=Property.CFrame.lookVector*knockback
+                end
+                if knockback>0 then
+                        vp.Parent=hit.Parent.Torso
+                end
+                game:GetService("Debris"):AddItem(vp,.5)
+            elseif Type=="Up" then
+                hit.Parent.Humanoid.PlatformStand = true
+                local bodyVelocity=Instance.new("BodyVelocity")
+                bodyVelocity.velocity=vt(0,15,0)
+                bodyVelocity.P=5000
+                bodyVelocity.maxForce=Vector3.new(8e+003, 8e+003, 8e+003)
+                bodyVelocity.Parent=hit
+                game:GetService("Debris"):AddItem(bodyVelocity,1)
+                rl=Instance.new("BodyAngularVelocity")
+                rl.P=3000
+rl.AngularVelocity = Vector3.new(2000,2000,2000)
+rl.MaxTorque = Vector3.new(40000,40000,40000)
+                rl.Parent=hit
+                hit.Parent.Humanoid.PlatformStand = false
+                game:GetService("Debris"):AddItem(rl,.5)
+                elseif Type=="Snare" then
+                bp=Instance.new("BodyPosition")
+                bp.P=2000
+                bp.D=100
+                bp.maxForce=Vector3.new(math.huge,math.huge,math.huge)
+                bp.position=hit.Parent.Torso.Position
+                bp.Parent=hit.Parent.Torso
+                game:GetService("Debris"):AddItem(bp,1)
+            elseif Type=="Float" then
+                hit.Parent.Humanoid.PlatformStand = true
+                                bp=Instance.new("BodyPosition")
+                bp.P=2000
+                bp.D=400
+                bp.maxForce=Vector3.new(math.huge,math.huge,math.huge)
+                bp.position=hit.Parent.Torso.Position+vt(0,35,24)
+                                bp.Parent=hit.Parent.Torso
+                	
+local	rl=Instance.new("BodyAngularVelocity",hit.Parent.Torso)
+rl.P=377705
+rl.maxTorque=Vector3.new(1,1,1)*500
+rl.angularvelocity=Vector3.new(math.random(-3,3),math.random(-6,6),math.random(-3,3))
+
+ local BF = Instance.new("BodyForce",hit.Parent.Torso)
+            BF.force = Vector3.new(0, workspace.Gravity/1.10, 0)
+                game:GetService("Debris"):AddItem(bp,5)
+game:GetService("Debris"):AddItem(BF,5)
+game:GetService("Debris"):AddItem(rl,5)
+                elseif Type=="Target" then
+                if Targetting==false then
+                ZTarget=hit.Parent.Torso
+                coroutine.resume(coroutine.create(function(Part) 
+                so("http://www.roblox.com/asset/?id=15666462",Part,1,1.5) 
+                swait(5)
+                so("http://www.roblox.com/asset/?id=15666462",Part,1,1.5) 
+                end),ZTarget)
+                TargHum=ZTarget.Parent:findFirstChild("Humanoid")
+                targetgui=Instance.new("BillboardGui")
+                targetgui.Parent=ZTarget
+                targetgui.Size=UDim2.new(10,100,10,100)
+                targ=Instance.new("ImageLabel")
+                targ.Parent=targetgui
+                targ.BackgroundTransparency=1
+                targ.Image="rbxassetid://4834067"
+                targ.Size=UDim2.new(1,0,1,0)
+                cam.CameraType="Scriptable"
+                cam.CoordinateFrame=CFrame.new(Head.CFrame.p,ZTarget.Position)
+                dir=Vector3.new(cam.CoordinateFrame.lookVector.x,0,cam.CoordinateFrame.lookVector.z)
+                workspace.CurrentCamera.CoordinateFrame=CFrame.new(Head.CFrame.p,ZTarget.Position)
+                Targetting=true
+                RocketTarget=ZTarget
+                for i=1,Property do
+                --while Targetting==true and Humanoid.Health>0 and Character.Parent~=nil do
+                if Humanoid.Health>0 and char.Parent~=nil and TargHum.Health>0 and TargHum.Parent~=nil and Targetting==true then
+                swait()
+                end
+                --workspace.CurrentCamera.CoordinateFrame=CFrame.new(Head.CFrame.p,Head.CFrame.p+rmdir*100)
+                cam.CoordinateFrame=CFrame.new(Head.CFrame.p,ZTarget.Position)
+                dir=Vector3.new(cam.CoordinateFrame.lookVector.x,0,cam.CoordinateFrame.lookVector.z)
+                cam.CoordinateFrame=CFrame.new(Head.CFrame.p,ZTarget.Position)*cf(0,5,10)*euler(-0.3,0,0)
+                end
+                Targetting=false
+                RocketTarget=nil
+                targetgui.Parent=nil
+                cam.CameraType="Custom"
+                end
+                end
+                        debounce=Instance.new("BoolValue")
+                        debounce.Name="DebounceHit"
+                        debounce.Parent=hit.Parent
+                        debounce.Value=true
+                        game:GetService("Debris"):AddItem(debounce,Delay)
+                        c=Instance.new("ObjectValue")
+                        c.Name="creator"
+                        c.Value=Player
+                        c.Parent=h
+                        game:GetService("Debris"):AddItem(c,.5)
+                CRIT=false
+                hitDeb=true
+                AttackPos=6
+                comboing = true
+                combohits = combohits+1
+                combotime = combotime+3.4
+
+
+                
+                if hitfloor == nil then
+                    
+    local velo=Instance.new("BodyVelocity")
+                velo.velocity=vt(0,5.5,0)
+                velo.P=8000
+                velo.maxForce=Vector3.new(math.huge, math.huge, math.huge)
+                velo.Parent=root
+                game:GetService("Debris"):AddItem(velo,0.06)
+                
+                                   local hitvelo=Instance.new("BodyVelocity")
+                hitvelo.velocity=vt(0,5.5,0)
+                hitvelo.P=8000
+                hitvelo.maxForce=Vector3.new(math.huge, math.huge, math.huge)
+                hitvelo.Parent=hit
+                             game:GetService("Debris"):AddItem(hitvelo,0.06)
+                             
+                                                          coroutine.resume(coroutine.create(function()
+                                 for i = 0,3.7,0.1 do
+   swait()
+         hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,0,-2.4)
+        root.Velocity = root.CFrame.lookVector*0
+        hit.Velocity = hit.CFrame.lookVector*130
+end
+end))
+         coroutine.resume(coroutine.create(function()
+             while ultra == true do
+                 swait()
+                 hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,0,-2.4)
+             end
+             end))
+                             
+                
+                end
+                
+                
+        end
+end
+ 
+kshowDamage=function(Char,Dealt,du,Color)
+        m=Instance.new("Model")
+        m.Name=tostring(Dealt)
+        h=Instance.new("Humanoid")
+        h.Health=0
+        h.MaxHealth=0
+        h.Parent=m
+        c=Instance.new("Part")
+        c.Transparency=0
+        c.BrickColor=Color
+        c.Name="Head"
+        c.Material = "Neon"
+        c.TopSurface=0
+        c.BottomSurface=0
+        c.formFactor="Plate"
+        c.Size=Vector3.new(1,.4,1)
+        ms=Instance.new("CylinderMesh")
+        ms.Scale=Vector3.new(.8,.8,.8)
+        if CRIT==true then
+                ms.Scale=Vector3.new(1,1.25,1)
+        end
+        ms.Parent=c
+        c.Reflectance=0
+        Instance.new("BodyGyro").Parent=c
+        c.Parent=m
+        if Char:findFirstChild("Head")~=nil then
+        c.CFrame=CFrame.new(Char["Head"].CFrame.p+Vector3.new(0,1.5,0))
+        elseif Char.Parent:findFirstChild("Head")~=nil then
+        c.CFrame=CFrame.new(Char.Parent["Head"].CFrame.p+Vector3.new(0,1.5,0))
+        end
+        f=Instance.new("BodyPosition")
+        f.P=2000
+        f.D=220
+        f.maxForce=Vector3.new(math.huge,math.huge,math.huge)
+        f.position=c.Position+Vector3.new(0,3,0)
+        f.Parent=c
+        game:GetService("Debris"):AddItem(m,.5+du)
+        c.CanCollide=false
+        m.Parent=workspace
+        c.CanCollide=false
+    
+end
+
+-------------------------------------------------------
+--End Damage Function--
+-------------------------------------------------------
+
+-------------------------------------------------------
+--Start Damage Function Customization--
+-------------------------------------------------------
+function ShowDamage(Pos, Text, Time, Color)
+	local Rate = (1 / 30)
+	local Pos = (Pos or Vector3.new(0, 0, 0))
+	local Text = (Text or "")
+	local Time = (Time or 2)
+	local Color = (Color or Color3.new(1, 0, 1))
+	local EffectPart = CFuncs.Part.Create(workspace, "SmoothPlastic", 0, 1, BrickColor.new(Color), "Effect", Vector3.new(0, 0, 0))
+	EffectPart.Anchored = true
+	local BillboardGui = Create("BillboardGui"){
+		Size = UDim2.new(3, 0, 3, 0),
+		Adornee = EffectPart,
+		Parent = EffectPart,
+	}
+	local TextLabel = Create("TextLabel"){
+		BackgroundTransparency = 1,
+		Size = UDim2.new(1, 0, 1, 0),
+		Text = Text,
+		Font = "Bodoni",
+		TextColor3 = Color,
+		TextScaled = true,
+		TextStrokeColor3 = Color3.fromRGB(0,0,0),
+		Parent = BillboardGui,
+	}
+	game.Debris:AddItem(EffectPart, (Time))
+	EffectPart.Parent = game:GetService("Workspace")
+	delay(0, function()
+		local Frames = (Time / Rate)
+		for Frame = 1, Frames do
+			wait(Rate)
+			local Percent = (Frame / Frames)
+			EffectPart.CFrame = CFrame.new(Pos) + Vector3.new(0, Percent, 0)
+			TextLabel.TextTransparency = Percent
+		end
+		if EffectPart and EffectPart.Parent then
+			EffectPart:Destroy()
+		end
 	end)
 end
-do --[[ Bullet/TorsoFling Checking ]]--
-	if IsBulletEnabled == true and RigType == "R6" and IsPermaDeath == false then
-		if not Character:FindFirstChild("Robloxclassicred") then -- [[ Hat Check ]] -- 
-			local FakeHat = TestService:FindFirstChild("GelatekReanimateData"):FindFirstChild("R6FakeHat"):Clone()
-			FakeHat.Parent = Character
-			BulletHatInfo = {FakeHat, FakeRig:FindFirstChild("Left Arm"), CFrame.Angles(0,0,math.rad(90)), CFrame.new(), Vector3.new(), Vector3.new(0, 0, 90)}
-		else
-			BulletHatInfo = {Character:FindFirstChild("Robloxclassicred"), FakeRig:FindFirstChild("Left Arm"), CFrame.Angles(0,0,math.rad(90)), Vector3.new(), Vector3.new()}
-		end
-		BulletPartInfo = {Character:FindFirstChild("Left Arm"), FakeRig:FindFirstChild("Left Arm")}
-	elseif IsBulletEnabled == true and RigType == "R6" and IsPermaDeath == true then
-		BulletPartInfo = {Character:FindFirstChild("HumanoidRootPart"), FakeRig:FindFirstChild("HumanoidRootPart"), CFrame.new(), Vector3.new(), Vector3.new(), "yes"}
-	elseif IsBulletEnabled == true and RigType == "R15" then
-		local funnyoffseto = {0, 0}
-		if R15ToR6 == true then
-			funnyoffseto = {0.5, -0.5}
-		end
-		if not Character:FindFirstChild("SniperShoulderL") then -- [[ Hat Check ]] -- 
-			local FakeHat = TestService:FindFirstChild("GelatekReanimateData"):FindFirstChild("R15FakeHat"):Clone()
-			FakeHat.Parent = Character
-			BulletHatInfo = {FakeHat, FakeRig:FindFirstChild("Left Arm") or FakeRig:FindFirstChild("LeftUpperArm"), CFrame.new(0, funnyoffseto[1], 0), Vector3.new(0, funnyoffseto[2], 0), Vector3.new()}
-		else
-			BulletHatInfo = {Character:FindFirstChild("SniperShoulderL"), FakeRig:FindFirstChild("Left Arm") or FakeRig:FindFirstChild("LeftUpperArm"), CFrame.new(0, funnyoffseto[1], 0), Vector3.new(0, funnyoffseto[2], 0), Vector3.new()}
-		end
-		if R15ToR6 == true then
-			BulletPartInfo = {Character:FindFirstChild("LeftUpperArm"), FakeRig:FindFirstChild("Left Arm") or FakeRig:FindFirstChild("LeftUpperArm"), CFrame.new(0, 0.4085, 0), Vector3.new(0, -0.4085, 0), Vector3.new()}	
-		else
-			BulletPartInfo = {Character:FindFirstChild("LeftUpperArm"), FakeRig:FindFirstChild("Left Arm") or FakeRig:FindFirstChild("LeftUpperArm"), CFrame.new(0, 0, 0), Vector3.new(0, -0, 0), Vector3.new()}	
-		end
-	end
-	if IsTorsoFling == true then
-		CollideFlingPart = Character:FindFirstChild("Torso") or Character:FindFirstChild("UpperTorso")
-		local Highlight = Instance.new("SelectionBox")
-		Highlight.Adornee = CollideFlingPart
-		Highlight.Name = "BulletHightlight"
-		Highlight.Parent = CollideFlingPart 
-		task.spawn(function()
-			task.wait(1)
-			if CollideFlingPart:FindFirstChild("AntiRotation") then
-				CollideFlingPart:FindFirstChild("AntiRotation")
-			end
-		end)
-		if RigType == "R6" then
-			CollideFlingInfo = {CollideFlingPart, FakeRig:FindFirstChild("Torso"), CFrame.new()}
-		elseif RigType == "R15" and R15ToR6 == true then
-			CollideFlingInfo = {CollideFlingPart, FakeRig:FindFirstChild("Torso"), CFrame.new(0, 0.194, 0)}
-		elseif RigType == "R15" and R15ToR6 == false then
-			CollideFlingInfo = {CollideFlingPart, FakeRig:FindFirstChild("UpperTorso"), CFrame.new()}
-		end
-	else
-		CollideFlingInfo = nil
-		CollideFlingPart = nil
-	end
-	if BulletPartInfo then
-		local Highlight = Instance.new("SelectionBox")
-		Highlight.Adornee = BulletPartInfo[1]
-		Highlight.Name = "BulletHightlight"
-		Highlight.LineThickness = 0.05
-		if BulletPartInfo[1].Name == "HumanoidRootPart" then
-			Highlight.Transparency = 0.75
-		end
-		BulletPartInfo[1].Name = 'Bullet'
-		BulletPartInfo[1].Transparency = 0.5
-		Highlight.Parent = BulletPartInfo[1]
-	end
+-------------------------------------------------------
+--End Damage Function Customization--
+-------------------------------------------------------
+
+function MagniDamage(Part, magni, mindam, maxdam, knock, Type)
+  for _, c in pairs(workspace:children()) do
+    local hum = c:findFirstChild("Humanoid")
+    if hum ~= nil then
+      local head = c:findFirstChild("Head")
+      if head ~= nil then
+        local targ = head.Position - Part.Position
+        local mag = targ.magnitude
+        if magni >= mag and c.Name ~= plr.Name then
+          Damage(head, head, mindam, maxdam, knock, Type, root, 0.1, "http://www.roblox.com/asset/?id=0", 1.2)
+        end
+      end
+    end
+  end
 end
 
-Character:MoveTo(FakeRig.HumanoidRootPart.Position)
 
-local Offsets --[[ Offsets For R15 ]] --
-if RigType == "R15" then
-	Offsets = {
-		["UpperTorso"] = {FakeRig:FindFirstChild("Torso"), CFrame.new(0, 0.194, 0), Vector3.new(0, -0.194, 0)},
-		["LowerTorso"] = {FakeRig:FindFirstChild("Torso"), CFrame.new(0, -0.79, 0), Vector3.new(0, 0.79, 0)},
-
-		["RightUpperArm"] = {FakeRig:FindFirstChild("Right Arm"), CFrame.new(0, 0.4085, 0), Vector3.new(0, -0.4085, 0)},
-		["RightLowerArm"] = {FakeRig:FindFirstChild("Right Arm"), CFrame.new(0, -0.184, 0), Vector3.new(0, 0.184, 0)},
-		["RightHand"] = {FakeRig:FindFirstChild("Right Arm"), CFrame.new(0, -0.83, 0), Vector3.new(0, 0.83, 0)},
-
-		["LeftUpperArm"] = {FakeRig:FindFirstChild("Left Arm"), CFrame.new(0, 0.4085, 0), Vector3.new(0, -0.4085, 0)},
-		["LeftLowerArm"] = {FakeRig:FindFirstChild("Left Arm"), CFrame.new(0, -0.184, 0), Vector3.new(0, 0.184, 0)},
-		["LeftHand"] = {FakeRig:FindFirstChild("Left Arm"), CFrame.new(0, -0.83, 0), Vector3.new(0, 0.83, 0)},
-
-		["RightUpperLeg"] = {FakeRig:FindFirstChild("Right Leg"), CFrame.new(0, 0.575, 0), Vector3.new(0, -0.575, 0)},
-		["RightLowerLeg"] = {FakeRig:FindFirstChild("Right Leg"), CFrame.new(0, -0.199, 0), Vector3.new(0, 0.199, 0)},
-		["RightFoot"] = {FakeRig:FindFirstChild("Right Leg"), CFrame.new(0, -0.849, 0), Vector3.new(0, 0.849, 0)},
-
-		["LeftUpperLeg"] = {FakeRig:FindFirstChild("Left Leg"), CFrame.new(0, 0.575, 0), Vector3.new(0, -0.575, 0)},
-		["LeftLowerLeg"] = {FakeRig:FindFirstChild("Left Leg"), CFrame.new(0, -0.199, 0), Vector3.new(0, 0.199, 0)},
-		["LeftFoot"] = {FakeRig:FindFirstChild("Left Leg"), CFrame.new(0, -0.849, 0), Vector3.new(0, 0.849, 0)}
+CFuncs = {
+	Part = {
+		Create = function(Parent, Material, Reflectance, Transparency, BColor, Name, Size)
+			local Part = Create("Part")({
+				Parent = Parent,
+				Reflectance = Reflectance,
+				Transparency = Transparency,
+				CanCollide = false,
+				Locked = true,
+				BrickColor = BrickColor.new(tostring(BColor)),
+				Name = Name,
+				Size = Size,
+				Material = Material
+			})
+			RemoveOutlines(Part)
+			return Part
+		end
+	},
+	Mesh = {
+		Create = function(Mesh, Part, MeshType, MeshId, OffSet, Scale)
+			local Msh = Create(Mesh)({
+				Parent = Part,
+				Offset = OffSet,
+				Scale = Scale
+			})
+			if Mesh == "SpecialMesh" then
+				Msh.MeshType = MeshType
+				Msh.MeshId = MeshId
+			end
+			return Msh
+		end
+	},
+	Mesh = {
+		Create = function(Mesh, Part, MeshType, MeshId, OffSet, Scale)
+			local Msh = Create(Mesh)({
+				Parent = Part,
+				Offset = OffSet,
+				Scale = Scale
+			})
+			if Mesh == "SpecialMesh" then
+				Msh.MeshType = MeshType
+				Msh.MeshId = MeshId
+			end
+			return Msh
+		end
+	},
+	Weld = {
+		Create = function(Parent, Part0, Part1, C0, C1)
+			local Weld = Create("Weld")({
+				Parent = Parent,
+				Part0 = Part0,
+				Part1 = Part1,
+				C0 = C0,
+				C1 = C1
+			})
+			return Weld
+		end
+	},
+	Sound = {
+		Create = function(id, par, vol, pit)
+			coroutine.resume(coroutine.create(function()
+				local S = Create("Sound")({
+					Volume = vol,
+					Pitch = pit or 1,
+					SoundId = id,
+					Parent = par or workspace
+				})
+				wait()
+				S:play()
+				game:GetService("Debris"):AddItem(S, 6)
+			end))
+		end
+	},
+	ParticleEmitter = {
+		Create = function(Parent, Color1, Color2, LightEmission, Size, Texture, Transparency, ZOffset, Accel, Drag, LockedToPart, VelocityInheritance, EmissionDirection, Enabled, LifeTime, Rate, Rotation, RotSpeed, Speed, VelocitySpread)
+			local fp = Create("ParticleEmitter")({
+				Parent = Parent,
+				Color = ColorSequence.new(Color1, Color2),
+				LightEmission = LightEmission,
+				Size = Size,
+				Texture = Texture,
+				Transparency = Transparency,
+				ZOffset = ZOffset,
+				Acceleration = Accel,
+				Drag = Drag,
+				LockedToPart = LockedToPart,
+				VelocityInheritance = VelocityInheritance,
+				EmissionDirection = EmissionDirection,
+				Enabled = Enabled,
+				Lifetime = LifeTime,
+				Rate = Rate,
+				Rotation = Rotation,
+				RotSpeed = RotSpeed,
+				Speed = Speed,
+				VelocitySpread = VelocitySpread
+			})
+			return fp
+		end
 	}
-elseif RigType == "R6" then
-	Offsets = {
-		["Torso"] = {FakeRig:FindFirstChild("Torso"), CFrame.new()},
-		["Right Arm"] = {FakeRig:FindFirstChild("Right Arm"), CFrame.new()},
-		["Left Arm"] = {FakeRig:FindFirstChild("Left Arm"), CFrame.new()},
-		["Right Leg"] = {FakeRig:FindFirstChild("Right Leg"), CFrame.new()},
-		["Left Leg"] = {FakeRig:FindFirstChild("Left Leg"), CFrame.new()},
-	}
+}
+function RemoveOutlines(part)
+	part.TopSurface, part.BottomSurface, part.LeftSurface, part.RightSurface, part.FrontSurface, part.BackSurface = 10, 10, 10, 10, 10, 10
 end
-if IsPermaDeath == true then
-	task.spawn(function()
-		FakeHum.BreakJointsOnDeath = false
-		game:GetService("StarterGui"):SetCore("ResetButtonCallback", false)
-		task.wait(Players.RespawnTime + game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue() / 750)
-		local Head = Character:FindFirstChild("Head"); Head:BreakJoints() 
-		if IsHeadless == false then
-			Offsets["Head"] = {FakeRig:FindFirstChild("Head"), CFrame.new()}
-		else
-			Character:FindFirstChild("Head"):Destroy()
-		end
-		if IsHeadless == false and AlignReanimate == true then
-			Align(Character:FindFirstChild("Head"), FakeRig:FindFirstChild("Head"))	
-		end
-		game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
-		warn("Godmoded in: " .. string.sub(tostring(tick()-Speed),1,string.find(tostring(tick()-Speed),".")+5))
-	end)
+function CreatePart(FormFactor, Parent, Material, Reflectance, Transparency, BColor, Name, Size)
+	local Part = Create("Part")({
+		formFactor = FormFactor,
+		Parent = Parent,
+		Reflectance = Reflectance,
+		Transparency = Transparency,
+		CanCollide = false,
+		Locked = true,
+		BrickColor = BrickColor.new(tostring(BColor)),
+		Name = Name,
+		Size = Size,
+		Material = Material
+	})
+	RemoveOutlines(Part)
+	return Part
 end
--- fakehats for stop script for my hub
-for _, v in pairs(Character:GetChildren()) do
-	if v:IsA("Accessory") then
-		local FakeHats1 = v:Clone()
-		FakeHats1.Handle.Transparency = 1
-		ReCreateWelds(FakeRig, FakeHats1)
-		FakeHats1.Parent = FakeHats
+function CreateMesh(Mesh, Part, MeshType, MeshId, OffSet, Scale)
+	local Msh = Create(Mesh)({
+		Parent = Part,
+		Offset = OffSet,
+		Scale = Scale
+	})
+	if Mesh == "SpecialMesh" then
+		Msh.MeshType = MeshType
+		Msh.MeshId = MeshId
 	end
+	return Msh
+end
+function CreateWeld(Parent, Part0, Part1, C0, C1)
+	local Weld = Create("Weld")({
+		Parent = Parent,
+		Part0 = Part0,
+		Part1 = Part1,
+		C0 = C0,
+		C1 = C1
+	})
+	return Weld
 end
 
-do -- [[ Boosting Tweaks/Claims ]] --
-	for _, v in pairs(CharacterDescendants) do
-		if v:IsA("BasePart") then
-			v:ApplyAngularImpulse(Vector3.new())
-			v:ApplyImpulse(Velocity)
-			v.RootPriority = 127
-			if HubMode == false then
-				v.CustomPhysicalProperties = PhysicalProperties.new(0,0,0,0,0)	
-				v.Massless = true
-			end
-			if AlignReanimate == false then -- causes weird ass movement
-				local ABV = Instance.new("BodyAngularVelocity")
-				ABV.P = 1/0
-				ABV.MaxTorque = Vector3.new(1/0,1/0,1/0)
-				ABV.AngularVelocity = Vector3.new(0,0,0)
-				ABV.Name = "AntiRotation"
-				ABV.Parent = v
-				local BV = Instance.new("BodyVelocity")
-				BV.P = 1/0
-				BV.MaxForce = Vector3.new(1/0,1/0,1/0)
-				BV.Velocity = Vector3.new(0,0,0)
-				BV.Name = "Stabilition"
-				BV.Parent = v
-				table.insert(BodyVels, BV)
-			end
-			local HG = Instance.new("SelectionBox")
-			HG.Adornee = v
-			HG.Name = "OwnershipCheck"
-			HG.LineThickness = 0.4
-			HG.Transparency = 1
-			HG.Color3 = Color3.fromRGB(125,240,125)
-			HG.Parent = v
+
+-------------------------------------------------------
+--Start Effect Function--
+-------------------------------------------------------
+EffectModel = Instance.new("Model", char)
+Effects = {
+  Block = {
+    Create = function(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay, Type)
+      local prt = CFuncs.Part.Create(EffectModel, "SmoothPlastic", 0, 0, brickcolor, "Effect", Vector3.new())
+      prt.Anchored = true
+      prt.CFrame = cframe
+      local msh = CFuncs.Mesh.Create("BlockMesh", prt, "", "", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+      game:GetService("Debris"):AddItem(prt, 10)
+      if Type == 1 or Type == nil then
+        table.insert(Effects, {
+          prt,
+          "Block1",
+          delay,
+          x3,
+          y3,
+          z3,
+          msh
+        })
+      elseif Type == 2 then
+        table.insert(Effects, {
+          prt,
+          "Block2",
+          delay,
+          x3,
+          y3,
+          z3,
+          msh
+        })
+      else
+        table.insert(Effects, {
+          prt,
+          "Block3",
+          delay,
+          x3,
+          y3,
+          z3,
+          msh
+        })
+      end
+    end
+  },
+  Sphere = {
+    Create = function(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+      local prt = CFuncs.Part.Create(EffectModel, "Neon", 0, 0, brickcolor, "Effect", Vector3.new())
+      prt.Anchored = true
+      prt.CFrame = cframe
+      local msh = CFuncs.Mesh.Create("SpecialMesh", prt, "Sphere", "", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+      game:GetService("Debris"):AddItem(prt, 10)
+      table.insert(Effects, {
+        prt,
+        "Cylinder",
+        delay,
+        x3,
+        y3,
+        z3,
+        msh
+      })
+    end
+  },
+  Cylinder = {
+    Create = function(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+      local prt = CFuncs.Part.Create(EffectModel, "SmoothPlastic", 0, 0, brickcolor, "Effect", Vector3.new())
+      prt.Anchored = true
+      prt.CFrame = cframe
+      local msh = CFuncs.Mesh.Create("CylinderMesh", prt, "", "", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+      game:GetService("Debris"):AddItem(prt, 10)
+      table.insert(Effects, {
+        prt,
+        "Cylinder",
+        delay,
+        x3,
+        y3,
+        z3,
+        msh
+      })
+    end
+  },
+  Wave = {
+    Create = function(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+      local prt = CFuncs.Part.Create(EffectModel, "Neon", 0, 0, brickcolor, "Effect", Vector3.new())
+      prt.Anchored = true
+      prt.CFrame = cframe
+      local msh = CFuncs.Mesh.Create("SpecialMesh", prt, "FileMesh", "rbxassetid://20329976", Vector3.new(0, 0, 0), Vector3.new(x1 / 60, y1 / 60, z1 / 60))
+      game:GetService("Debris"):AddItem(prt, 10)
+      table.insert(Effects, {
+        prt,
+        "Cylinder",
+        delay,
+        x3 / 60,
+        y3 / 60,
+        z3 / 60,
+        msh
+      })
+    end
+  },
+  Ring = {
+    Create = function(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+      local prt = CFuncs.Part.Create(EffectModel, "SmoothPlastic", 0, 0, brickcolor, "Effect", Vector3.new())
+      prt.Anchored = true
+      prt.CFrame = cframe
+      local msh = CFuncs.Mesh.Create("SpecialMesh", prt, "FileMesh", "rbxassetid://3270017", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+      game:GetService("Debris"):AddItem(prt, 10)
+      table.insert(Effects, {
+        prt,
+        "Cylinder",
+        delay,
+        x3,
+        y3,
+        z3,
+        msh
+      })
+    end
+  },
+  Break = {
+    Create = function(brickcolor, cframe, x1, y1, z1)
+      local prt = CFuncs.Part.Create(EffectModel, "Neon", 0, 0, brickcolor, "Effect", Vector3.new(0.5, 0.5, 0.5))
+      prt.Anchored = true
+      prt.CFrame = cframe * CFrame.fromEulerAnglesXYZ(math.random(-50, 50), math.random(-50, 50), math.random(-50, 50))
+      local msh = CFuncs.Mesh.Create("SpecialMesh", prt, "Sphere", "", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+      local num = math.random(10, 50) / 1000
+      game:GetService("Debris"):AddItem(prt, 10)
+      table.insert(Effects, {
+        prt,
+        "Shatter",
+        num,
+        prt.CFrame,
+        math.random() - math.random(),
+        0,
+        math.random(50, 100) / 100
+      })
+    end
+  },
+Spiral = {
+    Create = function(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+      local prt = CFuncs.Part.Create(EffectModel, "SmoothPlastic", 0, 0, brickcolor, "Effect", Vector3.new())
+      prt.Anchored = true
+      prt.CFrame = cframe
+      local msh = CFuncs.Mesh.Create("SpecialMesh", prt, "FileMesh", "rbxassetid://1051557", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+      game:GetService("Debris"):AddItem(prt, 10)
+      table.insert(Effects, {
+        prt,
+        "Cylinder",
+        delay,
+        x3,
+        y3,
+        z3,
+        msh
+      })
+    end
+  },
+Push = {
+    Create = function(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+      local prt = CFuncs.Part.Create(EffectModel, "SmoothPlastic", 0, 0, brickcolor, "Effect", Vector3.new())
+      prt.Anchored = true
+      prt.CFrame = cframe
+      local msh = CFuncs.Mesh.Create("SpecialMesh", prt, "FileMesh", "rbxassetid://437347603", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+      game:GetService("Debris"):AddItem(prt, 10)
+      table.insert(Effects, {
+        prt,
+        "Cylinder",
+        delay,
+        x3,
+        y3,
+        z3,
+        msh
+      })
+    end
+  }
+}
+function part(formfactor ,parent, reflectance, transparency, brickcolor, name, size)
+	local fp = IT("Part")
+	fp.formFactor = formfactor 
+	fp.Parent = parent
+	fp.Reflectance = reflectance
+	fp.Transparency = transparency
+	fp.CanCollide = false 
+	fp.Locked = true
+	fp.BrickColor = brickcolor
+	fp.Name = name
+	fp.Size = size
+	fp.Position = tors.Position 
+	RemoveOutlines(fp)
+	fp.Material = "SmoothPlastic"
+	fp:BreakJoints()
+	return fp 
+end 
+ 
+function mesh(Mesh,part,meshtype,meshid,offset,scale)
+	local mesh = IT(Mesh) 
+	mesh.Parent = part
+	if Mesh == "SpecialMesh" then
+		mesh.MeshType = meshtype
+	if meshid ~= "nil" then
+		mesh.MeshId = "http://www.roblox.com/asset/?id="..meshid
 		end
 	end
-	coroutine.wrap(function() --// Delayless Method; Used for root Y cframing.
-		while task.wait(0.05) do
-			Root_Offset = Root_Offset * -1
-		end
-	end)()
+	mesh.Offset = offset
+	mesh.Scale = scale
+	return mesh
 end
-table.insert(Events, RunService.PreSimulation:Connect(function()
-	for _, v in pairs(CharacterDescendants) do -- [[ Main Things ]] --
-		if v:IsA("BasePart") then
-			if v and v.Parent then
-				v.CanCollide = false
-				v.CanQuery = false
-				v.CanTouch = false
-			end
-		end
-	end
-	for _, v in pairs(FakeRigDescendants) do
-		if v:IsA("BasePart") then
-			if v and v.Parent then
-				v.CanCollide = false
-			end
-		end
-	end
-end))
 
-local function Death()
-	Global.Stopped = true
-	Character.Parent = workspace
-	Player.Character = workspace:FindFirstChild(Character.Name)
-	Humanoid:ChangeState(15)
-	if FakeRig then FakeRig:Destroy() end
-	for i,v in pairs(Events) do
-		v:Disconnect()
+function Magic(bonuspeed, type, pos, scale, value, color, MType)
+	local type = type
+	local rng = Instance.new("Part", char)
+	rng.Anchored = true
+	rng.BrickColor = color
+	rng.CanCollide = false
+	rng.FormFactor = 3
+	rng.Name = "Ring"
+	rng.Material = "Neon"
+	rng.Size = Vector3.new(1, 1, 1)
+	rng.Transparency = 0
+	rng.TopSurface = 0
+	rng.BottomSurface = 0
+	rng.CFrame = pos
+	local rngm = Instance.new("SpecialMesh", rng)
+	rngm.MeshType = MType
+	rngm.Scale = scale
+	local scaler2 = 1
+	if type == "Add" then
+		scaler2 = 1 * value
+	elseif type == "Divide" then
+		scaler2 = 1 / value
 	end
-	for i,v in pairs(Global.TableOfEvents) do
-		v:Disconnect()
-	end
-	if FakeRig then FakeRig:Destroy() end
-	FakeRig = nil
-	task.wait(0.15)
-	if game:FindFirstChildOfClass("TestService"):FindFirstChild("ScriptCheck") then
-		game:FindFirstChildOfClass("TestService"):FindFirstChild("ScriptCheck"):Destroy()
-	end
-	Global.Stopped = false
-	Global.RealChar = nil
-end
-	
-table.insert(Events, ArtificalEvent:Connect(function()
-	if FakeRig.HumanoidRootPart.Position.Y <= workspace.FallenPartsDestroyHeight + 70 then
-		if TeleportBackWhenVoided == false then
-            pcall(function()
-                Death()
-            end)
-		else
-			FakeRig:MoveTo(SpawnPoint.Position)
-		end
-	end
-	if not CollideFlingInfo then
-		local Torso = Character:FindFirstChild("Torso") or Character:FindFirstChild("UpperTorso")
-		Torso.AssemblyLinearVelocity = Velocity	
-	end
-	for _, v in pairs(BodyVels) do
-		v.Velocity = Velocity
-	end
-
-	for _, v in pairs(CharacterDescendants) do -- [[ Main Things ]] --
-		if v:IsA("BasePart") then
-			if v and v.Parent then
-				if (CollideFlingInfo and v.Name ~= CollideFlingInfo[1].Name) or not CollideFlingInfo then
-					v.AssemblyLinearVelocity = Velocity
-				end
+	coroutine.resume(coroutine.create(function()
+		for i = 0, 10 / bonuspeed, 0.1 do
+			swait()
+			if type == "Add" then
+				scaler2 = scaler2 - 0.01 * value / bonuspeed
+			elseif type == "Divide" then
+				scaler2 = scaler2 - 0.01 / value * bonuspeed
 			end
+			rng.Transparency = rng.Transparency + 0.01 * bonuspeed
+			rngm.Scale = rngm.Scale + Vector3.new(scaler2 * bonuspeed, scaler2 * bonuspeed, scaler2 * bonuspeed)
 		end
-	end
-	if AlignReanimate == true and IsTorsoFling == true then
-		CFrameAlign(CollideFlingInfo[1], CollideFlingInfo[2], CollideFlingInfo[3]) 
-	end
-	if IsTorsoFling == true then
-		if RigType == "R6" then
-			if FakeHum.MoveDirection.Magnitude < 0.1 then
-				CollideFlingPart.AssemblyLinearVelocity = Velocity
-			elseif FakeHum.MoveDirection.Magnitude > 0.1 then
-				CollideFlingPart.AssemblyLinearVelocity = Vector3.new(1000,1000,1000)
-			end
-		else
-			CollideFlingPart.AssemblyLinearVelocity = Velocity
-			if FakeHum.MoveDirection.Magnitude < 0.1 then
-				CollideFlingPart.RotVelocity = Vector3.new()
-			elseif FakeHum.MoveDirection.Magnitude > 0.1 then
-				CollideFlingPart.RotVelocity = Vector3.new(2500,2500,2500)
-			end
-		end
-	else
-
-	end
-	if AlignReanimate == false then
-		for _, v in pairs(CharacterDescendants) do -- [[ Main Things ]] --
-			if v:IsA("Accessory") then
-				if v and v.Parent then
-					CFrameAlign(v.Handle, FakeRig[v.Name].Handle)
-				end
-			end
-		end
-		for i, v in pairs(Offsets) do
-			if RigType == "R15" and R15ToR6 == true and Character:FindFirstChild(i) then
-				CFrameAlign(Character:FindFirstChild(i), v[1], v[2])
-			elseif RigType == "R15" and R15ToR6 == false and Character:FindFirstChild(i) then
-				CFrameAlign(Character:FindFirstChild(i), FakeRig:FindFirstChild(i))
-			elseif RigType == "R6" and Character:FindFirstChild(i) then
-				CFrameAlign(Character:FindFirstChild(i), v[1])
-			end
-		end
-		if BulletHatInfo then
-			CFrameAlign(BulletHatInfo[1].Handle, BulletHatInfo[2], BulletHatInfo[3])
-		end
-		if BulletPartInfo and Global.PartDisconnected == false then
-			if BulletPartInfo[6] and BulletPartInfo[6] == "yes" then
-				CFrameAlign(RootPart, Character:FindFirstChild("UpperTorso") or Character:FindFirstChild("Torso"), CFrame.new(0,Root_Offset,0))
-			else
-				CFrameAlign(BulletPartInfo[1], BulletPartInfo[2], BulletPartInfo[3])
-			end
-		end
-	end
-	if RigType == "R15" or (RigType == "R6" and IsPermaDeath == false) or (RigType == "R6" and IsPermaDeath == true and IsBulletEnabled == false) then
-		CFrameAlign(RootPart, Character:FindFirstChild("UpperTorso") or Character:FindFirstChild("Torso"), CFrame.new(0,Root_Offset,0))
-	end
-end))
-
-if DynamicalVelocity == true then
-	local Y_Vel = Vector3.new(0, 25.45, 0) -- stability hlfdsajkladfjkladfs
-	table.insert(Events, RunService.PreSimulation:Connect(function()
-		if OldVelocityMethod == true then
-			Velocity = Vector3.new(FakeRig["HumanoidRootPart"].CFrame.LookVector.X * 85, FakeRig["Head"].Velocity.Y * 4, FakeRig["HumanoidRootPart"].CFrame.LookVector.Z * 85)
-		else
-			if FakeRig.HumanoidRootPart.Velocity.Y > 0 and FakeRig.HumanoidRootPart.Velocity.Y < 3 then
-				Y_Vel = Vector3.new(0,25.45,0)
-			else
-				Y_Vel = Vector3.new(0,28 + (FakeHum.JumpPower/12.5) + FakeRig.HumanoidRootPart.Velocity.Y/15, 0)
-			end
-			if FakeHum.MoveDirection.Magnitude < 0.1 then
-				Velocity = Y_Vel
-			elseif FakeHum.MoveDirection.Magnitude > 0.1 then
-				Velocity = FakeHum.MoveDirection * 125 + Y_Vel
-			end
-		end
+		rng:Destroy()
 	end))
 end
-if AlignReanimate == true then
-	for _, v in pairs(CharacterDescendants) do
-		if v:IsA("Accessory") then
-			if v and v.Parent and v:FindFirstChild("Handle") then
-				Align(v.Handle, FakeRig[v.Name].Handle)
-			end
-		end
-	end
-	for i, v in pairs(Offsets) do
-		if RigType == "R15" and R15ToR6 == true and Character:FindFirstChild(i) then
-			Align(Character:FindFirstChild(i), v[1], v[3])
-		elseif RigType == "R15" and R15ToR6 == false and Character:FindFirstChild(i) and i ~= "HumanoidRootPart" then
-			Align(Character:FindFirstChild(i), FakeRig:FindFirstChild(i))
-			CFrameAlign(RootPart, Character:FindFirstChild("UpperTorso"))
-		elseif RigType == "R6" and Character:FindFirstChild(i) then
-			Align(Character:FindFirstChild(i), v[1])
-		end
-	end
-	if BulletHatInfo then
-		Align(BulletHatInfo[1].Handle, BulletHatInfo[2], BulletHatInfo[4], BulletPartInfo[5])
-		BulletHatInfo[1].Handle.AlignOrientation.RigidityEnabled = true
-	end
-	if BulletPartInfo then
-		Align(BulletPartInfo[1], BulletPartInfo[2], BulletPartInfo[4], BulletPartInfo[5])
-	end
-end
--- [[ Break Joints ]] --
-for Index, Joint in ipairs(CharacterDescendants) do
-	if Joint:IsA("Motor6D") and Joint.Name ~= "Neck" then
-		Joint:Destroy()
-	elseif Joint.Name == "AccessoryWeld" then
-		if IsPermaDeath == true then
-			Joint:Destroy()
-		elseif IsPermaDeath == false then
-			local Attachment = Joint.Parent:FindFirstChildOfClass("Attachment")
-			if DontBreakHairWelds == true then
-				if Attachment.Name ~= "HatAttachment" and Attachment.Name ~= "FaceFrontAttachment" and Attachment.Name ~= "HairAttachment" and Attachment.Name ~= "FaceCenterAttachment" then
-					Joint:Destroy()
-				end
-			else
-				Joint:Destroy()
-			end
-		end	
-	end
-end
-local CurCameraOffset = workspace.CurrentCamera.CFrame
-workspace.CurrentCamera.CFrame = CurCameraOffset
-Player.Character = FakeRig
-workspace.CurrentCamera.CFrame = CurCameraOffset
-workspace.CurrentCamera.CameraSubject = FakeHum
-workspace.CurrentCamera.CFrame = CurCameraOffset
-if AreAnimationsDisabled == false then
-	if (RigType == "R15" and R15ToR6 == true) or RigType == "R6" then
-		R6Animate()
-	elseif RigType == "R15" and R15ToR6 == false then
-		local Anim = Character:FindFirstChild("Animate"):Clone()
-		FakeRig.Animate:Destroy()
-		Anim.Parent = FakeRig
-		Anim.Disabled = false
-	end
-end
-if IsLoadLibraryEnabled == true and (not RunService:IsStudio()) then
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Gelatekussy/GelatekReanimate/main/Addons/LoadLibrary.lua"))()
-end
-table.insert(Events,FakeHum.Died:Connect(function() 
-    Death()
-end))
-table.insert(Events,Player.CharacterRemoving:Connect(function() 
-	if FakeRig then FakeRig:Destroy() end
-	for i,v in pairs(Events) do
-		v:Disconnect()
-	end
-	for i,v in pairs(Global.TableOfEvents) do
-		v:Disconnect()
-	end
-	FakeRig = nil
-end))
 
-task.spawn(function()
-	if IsBulletEnabled == true and BulletAfterReanim == true then
-		task.wait(2.5)
-		Global.PartDisconnected = true
-		local Held = false
-		local Players = game:GetService("Players")
-		local Bullet = Character:FindFirstChild("Bullet")
-		local Highlight = FakeRig:FindFirstChild("FlingerHighlighter")
-		pcall(function() Bullet:FindFirstChild("AntiRotation"):Destroy() 
-		end)
-		if AlignReanimate == true then
-		Bullet:FindFirstChild("GelatekAP2"):Destroy() 
-		Bullet:FindFirstChild("AlignPosition_1"):Destroy() 
-		Bullet:FindFirstChild("AlignOrientation"):Destroy() 
-		end
-		Bullet.Transparency = 1
-		local Mouse = Players.LocalPlayer:GetMouse()
-		local Power = Instance.new("BodyAngularVelocity")
-		local Position = Instance.new("BodyPosition")
-		Position.Position = Bullet.Position
-		Position.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
-		Position.P = 25000
-		Position.D = 200
-		Power.MaxTorque = Vector3.new(math.huge,math.huge,math.huge)
-		Power.P = math.huge
-		Power.AngularVelocity = Vector3.new(20000,20000,20000)
-		table.insert(Global.TableOfEvents, Mouse.Button1Down:Connect(function()
-			Held = true
-		end))
-		table.insert(Global.TableOfEvents, Mouse.Button1Up:Connect(function()
-			Held = false
-		end))
-		
-		Power.Parent = Bullet
-		Position.Parent = Bullet
-		coroutine.wrap(function()
-			while true do
-				Position.P = 25000
-				task.wait(5)
-				Position.P = 50000
-				task.wait(1)
-			end
-		end)()
-		table.insert(Global.TableOfEvents, game:GetService("RunService").Heartbeat:Connect(function()
-			local Hue = tick() % 5/5
-			pcall(function()
-				if Held then
-					if LockBulletOnTorso == true then
-						if Mouse.Target:IsA("BasePart") then
-							if Players:GetPlayerFromCharacter(Mouse.Target.Parent) then
-								if Mouse.Target.Parent.Name ~= Players.LocalPlayer.Name then
-									local Target = Mouse.Target.Parent:FindFirstChild("Torso") or Mouse.Target.Parent:FindFirstChild("Head") or Mouse.Target.Parent:FindFirstChildWhichIsA("BasePart")
-									Position.Position = Target.Position
-								end
-							elseif Players:GetPlayerFromCharacter(Mouse.Target.Parent.Parent) then
-								if Mouse.Target.Parent.Parent.Name ~= Players.LocalPlayer.Name then
-									local Target = Mouse.Target.Parent.Parent:FindFirstChild("Torso") or Mouse.Target.Parent.Parent:FindFirstChild("Head") or Mouse.Target.Parent.Parent:FindFirstChildWhichIsA("BasePart")
-									Position.Position = Target.Position
-								end
-							else
-								Position.Position = Mouse.Hit.Position
+function Eviscerate(dude)
+	if dude.Name ~= char then
+		local bgf = IT("BodyGyro", dude.Head)
+		bgf.CFrame = bgf.CFrame * CFrame.fromEulerAnglesXYZ(Rad(-90), 0, 0)
+		local val = IT("BoolValue", dude)
+		val.Name = "IsHit"
+		local ds = coroutine.wrap(function()
+			dude:WaitForChild("Head"):BreakJoints()
+			wait(0.5)
+			target = nil
+			coroutine.resume(coroutine.create(function()
+				for i, v in pairs(dude:GetChildren()) do
+					if v:IsA("Accessory") then
+						v:Destroy()
+					end
+					if v:IsA("Humanoid") then
+						v:Destroy()
+					end
+					if v:IsA("CharacterMesh") then
+						v:Destroy()
+					end
+					if v:IsA("Model") then
+						v:Destroy()
+					end
+					if v:IsA("Part") or v:IsA("MeshPart") then
+						for x, o in pairs(v:GetChildren()) do
+							if o:IsA("Decal") then
+								o:Destroy()
 							end
 						end
-					else
-						if Mouse.Target:IsA("BasePart") then
-							Position.Position = Mouse.Hit.Position
-						end
+						coroutine.resume(coroutine.create(function()
+							v.Material = "Neon"
+							v.CanCollide = false
+							local PartEmmit1 = IT("ParticleEmitter", v)
+							PartEmmit1.LightEmission = 1
+							PartEmmit1.Texture = "rbxassetid://284205403"
+							PartEmmit1.Color = ColorSequence.new(maincolor.Color)
+							PartEmmit1.Rate = 150
+							PartEmmit1.Lifetime = NumberRange.new(1)
+							PartEmmit1.Size = NumberSequence.new({
+								NumberSequenceKeypoint.new(0, 0.75, 0),
+								NumberSequenceKeypoint.new(1, 0, 0)
+							})
+							PartEmmit1.Transparency = NumberSequence.new({
+								NumberSequenceKeypoint.new(0, 0, 0),
+								NumberSequenceKeypoint.new(1, 1, 0)
+							})
+							PartEmmit1.Speed = NumberRange.new(0, 0)
+							PartEmmit1.VelocitySpread = 30000
+							PartEmmit1.Rotation = NumberRange.new(-500, 500)
+							PartEmmit1.RotSpeed = NumberRange.new(-500, 500)
+							local BodPoss = IT("BodyPosition", v)
+							BodPoss.P = 3000
+							BodPoss.D = 1000
+							BodPoss.maxForce = Vector3.new(50000000000, 50000000000, 50000000000)
+							BodPoss.position = v.Position + Vector3.new(Mrandom(-15, 15), Mrandom(-15, 15), Mrandom(-15, 15))
+							v.Color = maincolor.Color
+							coroutine.resume(coroutine.create(function()
+								for i = 0, 49 do
+									swait(1)
+									v.Transparency = v.Transparency + 0.08
+								end
+								wait(0.5)
+								PartEmmit1.Enabled = false
+								wait(3)
+								v:Destroy()
+								dude:Destroy()
+							end))
+						end))
 					end
-				else
-					Position.Position = FakeRig["HumanoidRootPart"].Position
 				end
-				Highlight.Color3 = Color3.fromHSV(Hue, 1, 1)
-			end)
-		end))
+			end))
+		end)
+		ds()
+	end
+end
+
+function FindNearestHead(Position, Distance, SinglePlayer)
+	if SinglePlayer then
+		return Distance > (SinglePlayer.Torso.CFrame.p - Position).magnitude
+	end
+	local List = {}
+	for i, v in pairs(workspace:GetChildren()) do
+		if v:IsA("Model") and v:findFirstChild("Head") and v ~= char and Distance >= (v.Head.Position - Position).magnitude then
+			table.insert(List, v)
+		end
+	end
+	return List
+end
+
+function Aura(bonuspeed, FastSpeed, type, pos, x1, y1, z1, value, color, outerpos, MType)
+	local type = type
+	local rng = Instance.new("Part", char)
+	rng.Anchored = true
+	rng.BrickColor = color
+	rng.CanCollide = false
+	rng.FormFactor = 3
+	rng.Name = "Ring"
+	rng.Material = "Neon"
+	rng.Size = Vector3.new(1, 1, 1)
+	rng.Transparency = 0
+	rng.TopSurface = 0
+	rng.BottomSurface = 0
+	rng.CFrame = pos
+	rng.CFrame = rng.CFrame + rng.CFrame.lookVector * outerpos
+	local rngm = Instance.new("SpecialMesh", rng)
+	rngm.MeshType = MType
+	rngm.Scale = Vector3.new(x1, y1, z1)
+	local scaler2 = 1
+	local speeder = FastSpeed
+	if type == "Add" then
+		scaler2 = 1 * value
+	elseif type == "Divide" then
+		scaler2 = 1 / value
+	end
+	coroutine.resume(coroutine.create(function()
+		for i = 0, 10 / bonuspeed, 0.1 do
+			swait()
+			if type == "Add" then
+				scaler2 = scaler2 - 0.01 * value / bonuspeed
+			elseif type == "Divide" then
+				scaler2 = scaler2 - 0.01 / value * bonuspeed
+			end
+			speeder = speeder - 0.01 * FastSpeed * bonuspeed
+			rng.CFrame = rng.CFrame + rng.CFrame.lookVector * speeder * bonuspeed
+			rng.Transparency = rng.Transparency + 0.01 * bonuspeed
+			rngm.Scale = rngm.Scale + Vector3.new(scaler2 * bonuspeed, scaler2 * bonuspeed, 0)
+		end
+		rng:Destroy()
+	end))
+end
+
+function SoulSteal(dude)
+if dude.Name ~= char then
+local bgf = IT("BodyGyro", dude.Head)
+bgf.CFrame = bgf.CFrame * CFrame.fromEulerAnglesXYZ(Rad(-90), 0, 0)
+local val = IT("BoolValue", dude)
+val.Name = "IsHit"
+local torso = (dude:FindFirstChild'Head' or dude:FindFirstChild'Torso' or dude:FindFirstChild'UpperTorso' or dude:FindFirstChild'LowerTorso' or dude:FindFirstChild'HumanoidRootPart')
+local soulst = coroutine.wrap(function()
+local soul = Instance.new("Part",dude)
+soul.Size = Vector3.new(1,1,1)
+soul.CanCollide = false
+soul.Anchored = false
+soul.Position = torso.Position
+soul.Transparency = 1
+local PartEmmit1 = IT("ParticleEmitter", soul)
+PartEmmit1.LightEmission = 1
+PartEmmit1.Texture = "rbxassetid://569507414"
+PartEmmit1.Color = ColorSequence.new(maincolor.Color)
+PartEmmit1.Rate = 250
+PartEmmit1.Lifetime = NumberRange.new(1.6)
+PartEmmit1.Size = NumberSequence.new({
+	NumberSequenceKeypoint.new(0, 1, 0),
+	NumberSequenceKeypoint.new(1, 0, 0)
+})
+PartEmmit1.Transparency = NumberSequence.new({
+	NumberSequenceKeypoint.new(0, 0, 0),
+	NumberSequenceKeypoint.new(1, 1, 0)
+})
+PartEmmit1.Speed = NumberRange.new(0, 0)
+PartEmmit1.VelocitySpread = 30000
+PartEmmit1.Rotation = NumberRange.new(-360, 360)
+PartEmmit1.RotSpeed = NumberRange.new(-360, 360)
+local BodPoss = IT("BodyPosition", soul)
+BodPoss.P = 3000
+BodPoss.D = 1000
+BodPoss.maxForce = Vector3.new(50000000000, 50000000000, 50000000000)
+BodPoss.position = torso.Position + Vector3.new(Mrandom(-15, 15), Mrandom(-15, 15), Mrandom(-15, 15))
+wait(1.6)
+soul.Touched:connect(function(hit)
+	if hit.Parent == char then
+	soul:Destroy()
 	end
 end)
-if DetailedCredits == true then
-	task.spawn(function()
-		local ScreenGui = Instance.new("ScreenGui")
-		local DefaultSample = Instance.new("Frame")
-		local TextLabel = Instance.new("TextLabel")
-		local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
-		local TextLabel_2 = Instance.new("TextLabel")
-		local UITextSizeConstraint_2 = Instance.new("UITextSizeConstraint")
-		local Cat = Instance.new("Frame")
-		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-		local UIStroke = Instance.new("UIStroke")
-		local Sound = Instance.new("Sound")
-		--Properties:
-		if not RunService:IsStudio() then
-			ScreenGui.Parent = game.CoreGui
-		else
-			ScreenGui.Parent = Player.PlayerGui
-		end
-		DefaultSample.Name = "DefaultSample"
-		DefaultSample.Parent = ScreenGui
-		DefaultSample.AnchorPoint = Vector2.new(0.5, 0.5)
-		DefaultSample.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-		DefaultSample.BackgroundTransparency = 0.700
-		DefaultSample.BorderSizePixel = 0
-		DefaultSample.Position = UDim2.new(0.5, 0, -1.5, 0)
-		DefaultSample.Size = UDim2.new(0.363999993, 0, 1.5, 0)
-
-		UIStroke.Parent = DefaultSample
-		UIStroke.ApplyStrokeMode = 1
-		UIStroke.Thickness = 4
-		UIStroke.Color = Color3.fromRGB(172, 172, 172)
-		
-		TextLabel.Parent = DefaultSample
-		TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		TextLabel.BackgroundTransparency = 1.000
-		TextLabel.AnchorPoint = Vector2.new(0.5,0.5)
-		TextLabel.Position = UDim2.new(0.5, 0, 0.190133557, 0)
-		TextLabel.Size = UDim2.new(1, 0, 0.0285421945, 0)
-		TextLabel.Font = Enum.Font.Arcade
-		TextLabel.Text = "CREDITS (V1.5.5)"
-		TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-		TextLabel.TextScaled = true
-		TextLabel.TextSize = 14.000
-		TextLabel.TextStrokeTransparency = 0.000
-		TextLabel.TextWrapped = true
-
-		UITextSizeConstraint.Parent = TextLabel
-		UITextSizeConstraint.MaxTextSize = 30
-
-		Sound.Parent = DefaultSample
-		Sound.SoundId = "rbxassetid://3216912628"
-		Sound.Volume = 0.25
-		
-		TextLabel_2.Parent = DefaultSample
-		TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		TextLabel_2.BackgroundTransparency = 1.000
-		TextLabel_2.Position = UDim2.new(0.0301664975, 0, 0.225778505, 0)
-		TextLabel_2.Size = UDim2.new(0.943056703, 0, 0.3, 0)
-		TextLabel_2.Font = Enum.Font.Arcade
-		TextLabel_2.Text = [[GELATEK
-		Reanimate Itself, New Low Jitter and more, 
-
-
-
-		PRODUCTIONTAKEONE
-		Optimization, Helpful with tweaks and some stuff.
-
-
-
-		MYWORLD
-		Delayless Method, Inspiration
-
-
-
-		MIZT
-		Hat Renamer, Inspiration
-		
-		
-		4EYEDFOOL
-		Artifical Heartbeat
-
-
-		FNF SONIC.EXE TEAM
-		Inspiration for the Credit GUI
-		]]
-		TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-		TextLabel_2.TextScaled = true
-		TextLabel_2.TextSize = 14.000
-		TextLabel_2.TextStrokeTransparency = 0.000
-		TextLabel_2.TextWrapped = true
-		TextLabel_2.TextYAlignment = Enum.TextYAlignment.Top
-
-		UITextSizeConstraint_2.Parent = TextLabel_2
-		UITextSizeConstraint_2.MaxTextSize = 35
-
-		Cat.Name = "Cat"
-		Cat.Parent = DefaultSample
-		Cat.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		Cat.BackgroundTransparency = 1.000
-		Cat.AnchorPoint = Vector2.new(0.5,0.5)
-		Cat.Position = UDim2.new(0.5,0,0.7, 0)
-		Cat.Size = UDim2.new(0.289978415, 0, 0.139616504, 0)
-
-		UIAspectRatioConstraint.Parent = Cat
-
-		if not RunService:IsStudio() then
-			local getsynasset = getsynasset or getcustomasset or function() end 
-			local request = syn and syn.request or http and http.request or request or function() end
-			local isfile = isfile or readfile and function(filename) local succ,a = pcall(function() local b = readfile(filename) end) return succ end or function() end
-				
-			local Video = Instance.new("VideoFrame"); do
-				Video.Size = UDim2.new(1,0,1,0)
-				Video.Position = UDim2.new(0,0,0,0)
-				Video.Looped = true
-				Video.Parent = Cat
-			end
-			if getsynasset and request and writefile and isfile then
-				if not isfile("cat.webm") then
-					local Response, TempFile = request({Url = "https://cdn.discordapp.com/attachments/971520525736218766/1008731543298117692/cat.webm",Method = 'GET'})
-					if Response.StatusCode == 200 then
-						writefile("cat.webm",Response.Body)
-					end
-				end
-				Video.Video = getsynasset("cat.webm")
-				Video:Play()
-				Sound:Play()
-				DefaultSample:TweenPosition(UDim2.new(0.5,0,0.5,0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quart, 1, false)
-				task.wait(3.5)
-				DefaultSample:TweenPosition(UDim2.new(0.5,0,2.5,0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quart, 1, false)
-				task.wait(2.5)
-				ScreenGui:Destroy()
-			else
-				Video.Visible = false
-			end
-		end
-	end)
-else
-
+wait(1.2)
+while soul do
+	swait()
+	PartEmmit1.Color = ColorSequence.new(maincolor.Color)
+	BodPoss.Position = tors.Position
 end
-table.insert(Events, Player.Chatted:Connect(function(Text)
-	if Text == "gelatek skid" then
-		local TelService = game:GetService("TeleportService")
-		TelService:Teleport(10613034992)
+end)
+	soulst()
 	end
-end))
+end
 
-do -- Bug Reporting
-	local Bindable = Instance.new("BindableFunction")
-	local function Copy(e)
-		setclipboard("https://discord.gg/7tdu3ZuKbH")
-		Bindable:Destroy()
+
+
+
+--killer's effects
+
+
+
+
+
+		function CreatePart(Parent, Material, Reflectance, Transparency, BColor, Name, Size)
+	local Part = Create("Part"){
+		Parent = Parent,
+		Reflectance = Reflectance,
+		Transparency = Transparency,
+		CanCollide = false,
+		Locked = true,
+		BrickColor = BrickColor.new(tostring(BColor)),
+		Name = Name,
+		Size = Size,
+		Material = Material,
+	}
+	RemoveOutlines(Part)
+	return Part
+end
+	
+function CreateMesh(Mesh, Part, MeshType, MeshId, OffSet, Scale)
+	local Msh = Create(Mesh){
+		Parent = Part,
+		Offset = OffSet,
+		Scale = Scale,
+	}
+	if Mesh == "SpecialMesh" then
+		Msh.MeshType = MeshType
+		Msh.MeshId = MeshId
 	end
-	Bindable.OnInvoke = Copy
-	game.StarterGui:SetCore("SendNotification",{
-		Title = "Have fun!";
-		Text = "Click copy  to join the pendulum hub discord!";
-		Duration = 10;
-		Callback = Bindable,
-		Button1 = "Copy";
+	return Msh
+end
+		
+		
+		
+function BlockEffect(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay, Type)
+	local prt = CreatePart(workspace, "Neon", 0, 0, brickcolor, "Effect", Vector3.new())
+	prt.Anchored = true
+	prt.CFrame = cframe
+	local msh = CreateMesh("BlockMesh", prt, "", "", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+	game:GetService("Debris"):AddItem(prt, 10)
+	if Type == 1 or Type == nil then
+		table.insert(Effects, {
+			prt,
+			"Block1",
+			delay,
+			x3,
+			y3,
+			z3,
+			msh
+		})
+	elseif Type == 2 then
+		table.insert(Effects, {
+			prt,
+			"Block2",
+			delay,
+			x3,
+			y3,
+			z3,
+			msh
+		})
+	end
+end
+
+function SphereEffect(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+	local prt = CreatePart(workspace, "Neon", 0, 0, brickcolor, "Effect", Vector3.new())
+	prt.Anchored = true
+	prt.CFrame = cframe
+	local msh = CreateMesh("SpecialMesh", prt, "Sphere", "", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+	game:GetService("Debris"):AddItem(prt, 10)
+	table.insert(Effects, {
+		prt,
+		"Cylinder",
+		delay,
+		x3,
+		y3,
+		z3,
+		msh
 	})
 end
 
+function RingEffect(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+local prt=CreatePart(workspace,"Neon",0,0,brickcolor,"Effect",vt(.5,.5,.5))--part(3,workspace,"SmoothPlastic",0,0,brickcolor,"Effect",vt(0.5,0.5,0.5))
+prt.Anchored=true
+prt.CFrame=cframe
+msh=CreateMesh("SpecialMesh",prt,"FileMesh","http://www.roblox.com/asset/?id=3270017",vt(0,0,0),vt(x1,y1,z1))
+game:GetService("Debris"):AddItem(prt,2)
+coroutine.resume(coroutine.create(function(Part,Mesh,num) 
+for i=0,1,delay do
+swait()
+Part.Transparency=i
+Mesh.Scale=Mesh.Scale+vt(x3,y3,z3)
+end
+Part.Parent=nil
+end),prt,msh,(math.random(0,1)+math.random())/5)
+end
+
+function CylinderEffect(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+	local prt = CreatePart(workspace, "SmoothPlastic", 0, 0, brickcolor, "Effect", Vector3.new())
+	prt.Anchored = true
+	prt.CFrame = cframe
+	local msh = CreateMesh("CylinderMesh", prt, "", "", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+	game:GetService("Debris"):AddItem(prt, 10)
+	table.insert(Effects, {
+		prt,
+		"Cylinder",
+		delay,
+		x3,
+		y3,
+		z3,
+		msh
+	})
+end
+
+function WaveEffect(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+	local prt = CreatePart(workspace, "Neon", 0, 0, brickcolor, "Effect", Vector3.new())
+	prt.Anchored = true
+	prt.CFrame = cframe
+	local msh = CreateMesh("SpecialMesh", prt, "FileMesh", "rbxassetid://20329976", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+	game:GetService("Debris"):AddItem(prt, 10)
+	table.insert(Effects, {
+		prt,
+		"Cylinder",
+		delay,
+		x3,
+		y3,
+		z3,
+		msh
+	})
+end
+
+function SpecialEffect(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+	local prt = CreatePart(workspace, "Neon", 0, 0, brickcolor, "Effect", Vector3.new())
+	prt.Anchored = true
+	prt.CFrame = cframe
+	local msh = CreateMesh("SpecialMesh", prt, "FileMesh", "rbxassetid://24388358", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+	game:GetService("Debris"):AddItem(prt, 10)
+	table.insert(Effects, {
+		prt,
+		"Cylinder",
+		delay,
+		x3,
+		y3,
+		z3,
+		msh
+	})
+end
+
+
+function MoonEffect(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+	local prt = CreatePart(workspace, "Neon", 0, 0, brickcolor, "Effect", Vector3.new())
+	prt.Anchored = true
+	prt.CFrame = cframe
+	local msh = CreateMesh("SpecialMesh", prt, "FileMesh", "rbxassetid://259403370", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+	game:GetService("Debris"):AddItem(prt, 10)
+	table.insert(Effects, {
+		prt,
+		"Cylinder",
+		delay,
+		x3,
+		y3,
+		z3,
+		msh
+	})
+end
+
+function HeadEffect(brickcolor, cframe, x1, y1, z1, x3, y3, z3, delay)
+	local prt = CreatePart(workspace, "Neon", 0, 0, brickcolor, "Effect", Vector3.new())
+	prt.Anchored = true
+	prt.CFrame = cframe
+	local msh = CreateMesh("SpecialMesh", prt, "Head", "", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+	game:GetService("Debris"):AddItem(prt, 10)
+	table.insert(Effects, {
+		prt,
+		"Cylinder",
+		delay,
+		x3,
+		y3,
+		z3,
+		msh
+	})
+end
+
+function BreakEffect(brickcolor, cframe, x1, y1, z1)
+	local prt = CreatePart(workspace, "Neon", 0, 0, brickcolor, "Effect", Vector3.new(0.5, 0.5, 0.5))
+	prt.Anchored = true
+	prt.CFrame = cframe * CFrame.fromEulerAnglesXYZ(math.random(-50, 50), math.random(-50, 50), math.random(-50, 50))
+	local msh = CreateMesh("SpecialMesh", prt, "Sphere", "", Vector3.new(0, 0, 0), Vector3.new(x1, y1, z1))
+	local num = math.random(10, 50) / 1000
+	game:GetService("Debris"):AddItem(prt, 10)
+	table.insert(Effects, {
+		prt,
+		"Shatter",
+		num,
+		prt.CFrame,
+		math.random() - math.random(),
+		0,
+		math.random(50, 100) / 100
+	})
+end
+
+
+
+
+
+						       so = function(id,par,vol,pit)
+		coroutine.resume(coroutine.create(function()
+		local sou = Instance.new("Sound",par or workspace)
+		sou.Volume=vol
+		sou.Pitch=pit or 1
+		sou.SoundId=id
+		sou:play()
+		game:GetService("Debris"):AddItem(sou,8)
+		end))
+		end
+
+
+--end of killer's effects
+
+
+function FaceMouse()
+local	Cam = workspace.CurrentCamera
+	return {
+		CFrame.new(char.Torso.Position, Vector3.new(mouse.Hit.p.x, char.Torso.Position.y, mouse.Hit.p.z)),
+		Vector3.new(mouse.Hit.p.x, mouse.Hit.p.y, mouse.Hit.p.z)
+	}
+end
+-------------------------------------------------------
+--End Effect Function--
+-------------------------------------------------------
+function Cso(ID, PARENT, VOLUME, PITCH)
+	local NSound = nil
+	coroutine.resume(coroutine.create(function()
+		NSound = IT("Sound", PARENT)
+		NSound.Volume = VOLUME
+		NSound.Pitch = PITCH
+		NSound.SoundId = "http://www.roblox.com/asset/?id="..ID
+		swait()
+		NSound:play()
+		game:GetService("Debris"):AddItem(NSound, 10)
+	end))
+	return NSound
+end
+function CameraEnshaking(Length, Intensity)
+	coroutine.resume(coroutine.create(function()
+		local intensity = 1 * Intensity
+		local rotM = 0.01 * Intensity
+		for i = 0, Length, 0.1 do
+			swait()
+			intensity = intensity - 0.05 * Intensity / Length
+			rotM = rotM - 5.0E-4 * Intensity / Length
+			hum.CameraOffset = Vector3.new(Rad(Mrandom(-intensity, intensity)), Rad(Mrandom(-intensity, intensity)), Rad(Mrandom(-intensity, intensity)))
+			cam.CFrame = cam.CFrame * CF(Rad(Mrandom(-intensity, intensity)), Rad(Mrandom(-intensity, intensity)), Rad(Mrandom(-intensity, intensity))) * Euler(Rad(Mrandom(-intensity, intensity)) * rotM, Rad(Mrandom(-intensity, intensity)) * rotM, Rad(Mrandom(-intensity, intensity)) * rotM)
+		end
+		hum.CameraOffset = Vector3.new(0, 0, 0)
+	end))
+end
+-------------------------------------------------------
+--End Important Functions--
+-------------------------------------------------------
+
+
+-------------------------------------------------------
+--Start Customization--
+-------------------------------------------------------
+local Player_Size = 1
+if Player_Size ~= 1 then
+root.Size = root.Size * Player_Size
+tors.Size = tors.Size * Player_Size
+hed.Size = hed.Size * Player_Size
+ra.Size = ra.Size * Player_Size
+la.Size = la.Size * Player_Size
+rl.Size = rl.Size * Player_Size
+ll.Size = ll.Size * Player_Size
+----------------------------------------------------------------------------------
+rootj.Parent = root
+neck.Parent = tors
+RW.Parent = tors
+LW.Parent = tors
+RH.Parent = tors
+LH.Parent = tors
+----------------------------------------------------------------------------------
+rootj.C0 = RootCF * CF(0 * Player_Size, 0 * Player_Size, 0 * Player_Size) * angles(Rad(0), Rad(0), Rad(0))
+rootj.C1 = RootCF * CF(0 * Player_Size, 0 * Player_Size, 0 * Player_Size) * angles(Rad(0), Rad(0), Rad(0))
+neck.C0 = necko * CF(0 * Player_Size, 0 * Player_Size, 0 + ((1 * Player_Size) - 1)) * angles(Rad(0), Rad(0), Rad(0))
+neck.C1 = CF(0 * Player_Size, -0.5 * Player_Size, 0 * Player_Size) * angles(Rad(-90), Rad(0), Rad(180))
+RW.C0 = CF(1.5 * Player_Size, 0.5 * Player_Size, 0 * Player_Size) * angles(Rad(0), Rad(0), Rad(0)) --* RIGHTSHOULDERC0
+LW.C0 = CF(-1.5 * Player_Size, 0.5 * Player_Size, 0 * Player_Size) * angles(Rad(0), Rad(0), Rad(0)) --* LEFTSHOULDERC0
+----------------------------------------------------------------------------------
+RH.C0 = CF(1 * Player_Size, -1 * Player_Size, 0 * Player_Size) * angles(Rad(0), Rad(90), Rad(0)) * angles(Rad(0), Rad(0), Rad(0))
+LH.C0 = CF(-1 * Player_Size, -1 * Player_Size, 0 * Player_Size) * angles(Rad(0), Rad(-90), Rad(0)) * angles(Rad(0), Rad(0), Rad(0))
+RH.C1 = CF(0.5 * Player_Size, 1 * Player_Size, 0 * Player_Size) * angles(Rad(0), Rad(90), Rad(0)) * angles(Rad(0), Rad(0), Rad(0))
+LH.C1 = CF(-0.5 * Player_Size, 1 * Player_Size, 0 * Player_Size) * angles(Rad(0), Rad(-90), Rad(0)) * angles(Rad(0), Rad(0), Rad(0))
+--hat.Parent = Character
+end
+----------------------------------------------------------------------------------
+local SONG = 900817147 --900817147
+local SONG2 = 0
+local Music = Instance.new("Sound",tors)
+Music.Volume = 0.7
+Music.Looped = true
+Music.Pitch = 1 --Pitcher
+----------------------------------------------------------------------------------
+local equipped = false
+local idle = 0
+local change = 1
+local val = 0
+local toim = 0
+local idleanim = 0.4
+local sine = 0
+local Sit = 1
+local attacktype = 1
+local attackdebounce = false
+local euler = CFrame.fromEulerAnglesXYZ
+local cankick = false
+----------------------------------------------------------------------------------
+hum.WalkSpeed = 8
+hum.JumpPower = 57
+--[[
+local ROBLOXIDLEANIMATION = IT("Animation")
+ROBLOXIDLEANIMATION.Name = "Roblox Idle Animation"
+ROBLOXIDLEANIMATION.AnimationId = "http://www.roblox.com/asset/?id=180435571"
+]]
+local ANIMATOR = hum.Animator
+local ANIMATE = char.Animate
+ANIMATE.Parent = nil
+ANIMATOR.Parent = nil
+-------------------------------------------------------
+--End Customization--
+-------------------------------------------------------
+
+
+-------------------------------------------------------
+--Start Attacks N Stuff--
+-------------------------------------------------------
+
+--pls be proud mak i did my best
+
+
+
+function attackone()
+    
+    attack = true
+    
+          for i = 0, 1.35, 0.1 do
+        swait()
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0.7, -0.3) * angles(math.rad(-4-2*i), math.rad(4+2*i), math.rad(-40-11*i)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(0), math.rad(40+11*i)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.6, 0.2) * angles(math.rad(90+4*i), math.rad(-43), math.rad(16+6*i)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.5, 0) * angles(math.rad(90), math.rad(0), math.rad(-43)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.7, 0) * RHCF * angles(math.rad(-34), math.rad(0), math.rad(-17)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, -0.2) * LHCF * angles(math.rad(-24), math.rad(0), math.rad(0)), 0.2)
+      end
+      
+      so("http://roblox.com/asset/?id=1340545854",ra,1,math.random(0.7,1))
+
+
+con5=ra.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+
+kDamagefunc(hit,3,4,math.random(2,3),"Normal",root,0,1)
+
+so("http://roblox.com/asset/?id=636494529",ra,2,1)
+ 
+ RingEffect(BrickColor.new("White"),ra.CFrame*CFrame.new(0,-1,0)*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("White"),ra.CFrame*CFrame.new(0,-1,0)*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("White"),ra.CFrame*CFrame.new(0,-1,0)*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.35*1.8,0.35*1.8),math.random(-0.35*1.8,0.35*1.8),math.random(-0.35*1.8,0.35*1.8)),0.24)
+end
+end))
+
+
+      wait(0.34)
+attackdebounce = false
+
+end
+end
 end)
-warn("Reanimated in " .. string.sub(tostring(tick()-Speed),1,string.find(tostring(tick()-Speed),".")+5))
+                for i = 0, 1.12, 0.1 do
+        swait()
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, -0.9, -0) * angles(math.rad(14), math.rad(6), math.rad(23)), 0.35)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(-4), math.rad(0), math.rad(-23)), 0.35)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.3, 0.6, -0.8) * angles(math.rad(110), math.rad(23), math.rad(2)), 0.4)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.5, 0.2) * angles(math.rad(-37), math.rad(0), math.rad(-13)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -1, -0.3) * RHCF * angles(math.rad(-4), math.rad(0), math.rad(6)), 0.3)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -1, 0.05) * LHCF * angles(math.rad(-22), math.rad(0), math.rad(23)), 0.3)
+      end
+      
+      con5:Disconnect()
+          attack = false
+          
+      end
+
+
+
+
+
+
+
+
+
+
+
+
+function attacktwo()
+    
+    attack = true
+    
+          for i = 0, 1.35, 0.1 do
+        swait()
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0.7, -0.3) * angles(math.rad(-4), math.rad(-4), math.rad(40)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(0), math.rad(-40)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(90), math.rad(0), math.rad(46)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.6, 0.2) * angles(math.rad(90), math.rad(23), math.rad(6)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.7, -0.2) * RHCF * angles(math.rad(-34), math.rad(0), math.rad(-17)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-24), math.rad(0), math.rad(0)), 0.2)
+      end
+      
+      so("http://roblox.com/asset/?id=1340545854",la,1,math.random(0.7,1))
+
+
+con5=la.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+
+kDamagefunc(hit,3,4,math.random(2,3),"Normal",root,0,1)
+
+so("http://roblox.com/asset/?id=636494529",la,2,1)
+ 
+ RingEffect(BrickColor.new("White"),la.CFrame*CFrame.new(0,-1,0)*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("White"),la.CFrame*CFrame.new(0,-1,0)*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("White"),la.CFrame*CFrame.new(0,-1,0)*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.35*1.8,0.35*1.8),math.random(-0.35*1.8,0.35*1.8),math.random(-0.35*1.8,0.35*1.8)),0.24)
+end
+end))
+
+
+      wait(0.34)
+attackdebounce = false
+
+end
+end
+end)
+
+
+
+
+                for i = 0, 1.12, 0.1 do
+        swait()
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, -0.9, -0) * angles(math.rad(14), math.rad(-6), math.rad(-27)), 0.35)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(-4), math.rad(0), math.rad(27)), 0.35)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0.16) * angles(math.rad(-33), math.rad(0), math.rad(23)), 0.4)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.3, 0.67, -0.9) * angles(math.rad(116), math.rad(-28), math.rad(1)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -1, 0.05) * RHCF * angles(math.rad(-22), math.rad(0), math.rad(-18)), 0.3)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -1, -0.3) * LHCF * angles(math.rad(-2), math.rad(0), math.rad(4)), 0.3)
+      end
+      
+      con5:Disconnect()
+attack = false
+          
+      end
+
+
+
+
+
+function attackthree()
+    
+    attack = true
+    
+    
+              for i = 0, 1.14, 0.1 do
+        swait()
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0.7, -0.3) * angles(math.rad(-4), math.rad(-4), math.rad(40)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(0), math.rad(-40)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(90), math.rad(0), math.rad(-46)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.6, 0.2) * angles(math.rad(90), math.rad(23), math.rad(36)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.7, -0.2) * RHCF * angles(math.rad(-34), math.rad(0), math.rad(-17)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-12), math.rad(0), math.rad(34)), 0.2)
+      end
+    
+    con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+
+kDamagefunc(hit,4,5,math.random(3,4),"Normal",root,0,1)
+so("http://roblox.com/asset/?id=636494529",ll,2,1)
+ 
+ RingEffect(BrickColor.new("White"),ll.CFrame*CF(0,-1,0)*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("White"),ll.CFrame*CF(0,-1,0)*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("White"),ll.CFrame*CF(0,-1,0)*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.35*1.8,0.35*1.8),math.random(-0.35*1.8,0.35*1.8),math.random(-0.35*1.8,0.35*1.8)),0.24)
+end
+end))
+
+    
+          wait(0.34)
+attackdebounce = false
+
+end
+end
+end)
+
+        so("http://www.roblox.com/asset/?id=158475221", RightLeg, 1, 1.3)
+          for i = 0, 9.14, 0.3 do
+        swait()
+        BlockEffect(BrickColor.new("White"), ll.CFrame*CF(0,-1,0), 2, 2, 2, 3.5, 3.5, 3.5, 0.05)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, -0.87) * angles(math.rad(8), math.rad(8), math.rad(0-54*i)), 0.35)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(12), math.rad(0), math.rad(24)), 0.35)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(12), math.rad(0), math.rad(62)), 0.35)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.3, 0) * angles(math.rad(12), math.rad(0), math.rad(-23)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.17, -0.4) * RHCF * angles(math.rad(7), math.rad(0), math.rad(4)), 0.35)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.13, -0.6) * LHCF * angles(math.rad(-64-7*i), math.rad(0), math.rad(0-9*i)), 0.35)
+      end
+      attack = false
+      con5:disconnect()
+end
+
+
+
+function attackfour()
+    
+    attack = true
+            so("http://www.roblox.com/asset/?id=1452040709", RightLeg, 3, 1)
+     WaveEffect(BrickColor.new("White"), root.CFrame * CFrame.new(0, -1, 0) * euler(0, math.random(-50, 50), 0), 1, 1, 1, 1, 0.5, 1, 0.05)
+              for i = 0, 5.14, 0.1 do
+        swait()
+        SphereEffect(BrickColor.new("White"),rl.CFrame*angles(math.random(-50,50),math.random(-50,50),math.random(-50,50)),1,5,1,.05,4,.05,0.03)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, -0.8) * angles(math.rad(24+4*i), math.rad(0), math.rad(0)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0+11*i), math.rad(0), math.rad(0)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(0-6*i), math.rad(0), math.rad(36+4*i)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.5, 0) * angles(math.rad(0-6*i), math.rad(0), math.rad(-36-4*i)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.6, -0.3) * RHCF * angles(math.rad(0), math.rad(0), math.rad(-28+4*i)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.2, -0.5) * LHCF * angles(math.rad(0), math.rad(0), math.rad(-34-4*i)), 0.2)
+      end
+              so("http://www.roblox.com/asset/?id=158475221", RightLeg, 1, 1.3)
+       local velo=Instance.new("BodyVelocity")
+                velo.velocity=vt(0,25,0)
+                velo.P=8000
+                velo.maxForce=Vector3.new(math.huge, math.huge, math.huge)
+                velo.Parent=root
+                game:GetService("Debris"):AddItem(velo,0.7)
+
+
+
+con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+coroutine.resume(coroutine.create(function()
+    for i = 0,1.5,0.1 do
+        swait()
+ hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,1.6,-1.8)
+end
+end))
+kDamagefunc(hit,3,4,math.random(0,0),"Normal",root,0,1)
+so("http://roblox.com/asset/?id=636494529",rl,2,1)
+ RingEffect(BrickColor.new("White"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("White"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("White"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.75*1.8,0.75*1.8),math.random(-0.75*1.8,0.75*1.8),math.random(-0.75*1.8,0.75*1.8)),0.44)
+end
+end))
+
+
+      wait(0.14)
+attackdebounce = false
+end
+end
+end)
+
+                    for i = 0, 5.11, 0.15 do
+        swait()
+        BlockEffect(BrickColor.new("White"), rl.CFrame*CF(0,-1,0), 2, 2, 2, 3.5, 3.5, 3.5, 0.05)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, 0.1+0.2*i) * angles(math.rad(-10-80*i), math.rad(0), math.rad(0)), 0.42)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(-43), math.rad(0), math.rad(0)), 0.42)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(-8), math.rad(0), math.rad(60)), 0.35)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.5, 0) * angles(math.rad(-8), math.rad(0), math.rad(-60)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.5, 0) * RHCF * angles(math.rad(0), math.rad(0), math.rad(20+10*i)), 0.42)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.5, -0.4) * LHCF * angles(math.rad(0), math.rad(0), math.rad(24)), 0.42)
+      end
+
+
+      attack = false
+      con5:disconnect()
+    end
+
+
+
+
+
+local cooldown = false
+function quickkick()
+    attack = true
+    
+    
+con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1.5,0.1 do
+        swait()
+ hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,1.3,-1.8)
+end
+end))
+
+kDamagefunc(hit,1,2,math.random(0,0),"Normal",root,0,1)
+so("http://roblox.com/asset/?id=636494529",rl,2,1)
+ RingEffect(BrickColor.new("White"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("White"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("White"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.8*1.8,0.8*1.8),math.random(-0.8*1.8,0.8*1.8),math.random(-0.8*1.8,0.8*1.8)),0.44)
+end
+end))
+
+
+      wait(0.08)
+attackdebounce = false
+end
+end
+end)
+
+        so("http://www.roblox.com/asset/?id=158475221", RightLeg, 1, 1.3)
+          for i = 0, 11.14, 0.3 do
+        swait()
+        root.Velocity = root.CFrame.lookVector * 30
+        BlockEffect(BrickColor.new("White"), ll.CFrame*CF(0,-1,0), 2, 2, 2, 3.5, 3.5, 3.5, 0.05)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, -0.87) * angles(math.rad(-21-30*i), math.rad(8+10*i), math.rad(0-90*i)), 0.35)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(12), math.rad(0), math.rad(24)), 0.35)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(12), math.rad(0), math.rad(62)), 0.35)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.3, 0) * angles(math.rad(12), math.rad(0), math.rad(-23)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.17, -0.4) * RHCF * angles(math.rad(7), math.rad(0), math.rad(4)), 0.35)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.13, -0.6) * LHCF * angles(math.rad(-64-2*i), math.rad(0), math.rad(0-9*i)), 0.35)
+      end
+      attack = false
+      con5:disconnect()
+end
+
+    
+    
+    
+    
+    
+    
+    
+function Taunt()
+	attack = true
+	hum.WalkSpeed = 0
+	Cso("1535995570", hed, 8.45, 1)
+	for i = 0, 8.2, 0.1 do
+		swait()
+		hum.WalkSpeed = 0
+		rootj.C0 = clerp(rootj.C0, RootCF * CF(0* Player_Size, 0* Player_Size, -0.1 + 0.1* Player_Size * Cos(sine / 12)) * angles(Rad(0), Rad(0), Rad(0)), 0.2)
+		tors.Neck.C0 = clerp(tors.Neck.C0, necko* CF(0, 0, 0 + ((1* Player_Size) - 1)) * angles(Rad(25), Rad(0), Rad(16 * Cos(sine / 12))), 0.2)
+		RH.C0 = clerp(RH.C0, CF(1* Player_Size, -0.9 - 0.1 * Cos(sine / 12)* Player_Size, 0* Player_Size) * angles(Rad(0), Rad(75), Rad(0)) * angles(Rad(-6.5), Rad(0), Rad(0)), 0.1)
+		LH.C0 = clerp(LH.C0, CF(-1* Player_Size, -0.9 - 0.1 * Cos(sine / 12)* Player_Size, 0* Player_Size) * angles(Rad(0), Rad(-75), Rad(0)) * angles(Rad(-6.5), Rad(0), Rad(0)), 0.1)
+		RW.C0 = clerp(RW.C0, CF(1.1* Player_Size, 0.5 + 0.05 * Sin(sine / 12)* Player_Size, -0.5* Player_Size) * angles(Rad(180), Rad(6), Rad(-56)), 0.1)
+		LW.C0 = clerp(LW.C0, CF(-1* Player_Size, 0.1 + 0.05 * Sin(sine / 12)* Player_Size, -0.5* Player_Size) * angles(Rad(45), Rad(6), Rad(86)), 0.1)
+	end
+	attack = false
+	hum.WalkSpeed = 8
+end
+    
+    
+
+
+
+
+
+function Hyperkickcombo()
+    
+    attack = true
+            so("http://www.roblox.com/asset/?id=1452040709", RightLeg, 3, 1)
+     WaveEffect(BrickColor.new("White"), root.CFrame * CFrame.new(0, -1, 0) * euler(0, math.random(-50, 50), 0), 1, 1, 1, 1, 0.5, 1, 0.05)
+      for i = 0, 7.14, 0.1 do
+        swait()
+        SphereEffect(BrickColor.new("White"),rl.CFrame*angles(math.random(-50,50),math.random(-50,50),math.random(-50,50)),1,5,1,.05,4,.05,0.03)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, -0.8) * angles(math.rad(24), math.rad(0), math.rad(0)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(0), math.rad(0)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(-20), math.rad(0), math.rad(36)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.5, 0) * angles(math.rad(-20), math.rad(0), math.rad(-36)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.6, -0.3) * RHCF * angles(math.rad(0), math.rad(0), math.rad(-28)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.2, -0.5) * LHCF * angles(math.rad(0), math.rad(0), math.rad(-34)), 0.2)
+      end
+local Cracking = Cso("292536356", tors, 10, 1)
+ for i = 0, 7.14, 0.1 do
+        swait()
+		hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8)),0.34)
+		Aura(5, 0.15, "Add" , root.CFrame * CF(Mrandom(-12, 12), -6, Mrandom(-12, 12)) * angles(Rad(90 + Mrandom(-12, 12)), 0, 0), 1.5, 1.5, 10, -0.015, BrickC"Lime green", 0, "Sphere")
+		WaveEffect(BrickColor.new("Lime green"), root.CFrame * CFrame.new(0, -6, 0) * euler(0, math.random(-25, 25), 0), 1, 1, 1, 1, 0.2, 1, 0.05)
+        SphereEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-50,50),math.random(-50,50),math.random(-50,50)),1,5,1,.05,4,.05,0.03)
+		SphereEffect(BrickColor.new("Lime green"),ll.CFrame*angles(math.random(-50,50),math.random(-50,50),math.random(-50,50)),1,5,1,.05,4,.05,0.03)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, -0.8) * angles(math.rad(24), math.rad(0), math.rad(0)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(30), math.rad(0), math.rad(0)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(20), math.rad(0), math.rad(36)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.5, 0) * angles(math.rad(20), math.rad(0), math.rad(-36)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.6, -0.3) * RHCF * angles(math.rad(0), math.rad(0), math.rad(-28)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.2, -0.5) * LHCF * angles(math.rad(0), math.rad(0), math.rad(-34)), 0.2)
+      end
+      Cracking.Playing = false
+      so("http://www.roblox.com/asset/?id=197161452", char, 3, 0.8)
+              so("http://www.roblox.com/asset/?id=158475221", RightLeg, 1, 1.3)
+              SphereEffect(BrickColor.new("Lime green"),tors.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,38,38,38,0.08)
+       local velo=Instance.new("BodyVelocity")
+                velo.velocity=vt(0,27,0)
+                velo.P=11000
+                velo.maxForce=Vector3.new(math.huge, math.huge, math.huge)
+                velo.Parent=root
+                game:GetService("Debris"):AddItem(velo,1.24)
+
+
+
+con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+coroutine.resume(coroutine.create(function()
+    for i = 0,1.5,0.1 do
+        swait()
+ hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,3.4,-1.8)
+end
+end))
+kDamagefunc(hit,2,3,math.random(0,0),"Normal",root,0,1)
+so("http://roblox.com/asset/?id=636494529",rl,2,1.6)
+ RingEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8)),0.34)
+end
+end))
+
+
+      wait(0.09)
+attackdebounce = false
+end
+end
+end)
+
+                    for i = 0, 9.11, 0.2 do
+        swait()
+        BlockEffect(BrickColor.new("Lime green"), rl.CFrame*CF(0,-1,0), 2, 2, 2, 3.5, 3.5, 3.5, 0.05)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, 0.1+0.12*i) * angles(math.rad(-10-95*i), math.rad(0), math.rad(0)), 0.42)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(-43), math.rad(0), math.rad(0)), 0.42)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(-8), math.rad(0), math.rad(60)), 0.35)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.5, 0) * angles(math.rad(-8), math.rad(0), math.rad(-60)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.5, 0) * RHCF * angles(math.rad(0), math.rad(0), math.rad(20+10*i)), 0.42)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.5, -0.4) * LHCF * angles(math.rad(0), math.rad(0), math.rad(24)), 0.42)
+      end
+
+
+
+
+      con5:disconnect()
+      
+      
+      
+      
+      
+      
+      con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+coroutine.resume(coroutine.create(function()
+    for i = 0,1.5,0.1 do
+        swait()
+ hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,1.1,-1.8)
+end
+end))
+kDamagefunc(hit,3,4,math.random(0,0),"Normal",root,0,1)
+                       
+so("http://roblox.com/asset/?id=636494529",rl,2,1.6)
+ RingEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8)),0.34)
+end
+end))
+
+
+      wait(0.08)
+attackdebounce = false
+end
+end
+end)
+      
+      
+      
+        so("http://www.roblox.com/asset/?id=158475221", RightLeg, 1, 1.3)
+          for i = 0, 9.14, 0.3 do
+        swait()
+               root.Velocity = root.CFrame.lookVector * 20
+        BlockEffect(BrickColor.new("Lime green"), ll.CFrame*CF(0,-1,0), 2, 2, 2, 3.5, 3.5, 3.5, 0.05)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, -0.87) * angles(math.rad(53), math.rad(8), math.rad(0-54*i)), 0.35)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(12), math.rad(0), math.rad(24)), 0.35)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(12), math.rad(0), math.rad(62)), 0.35)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.3, 0) * angles(math.rad(12), math.rad(0), math.rad(-23)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.17, -0.4) * RHCF * angles(math.rad(7), math.rad(0), math.rad(4)), 0.35)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.13, -0.6) * LHCF * angles(math.rad(-64-7*i), math.rad(0), math.rad(0-9*i)), 0.35)
+      end
+      
+      
+      
+            con5:disconnect()
+      
+      
+      
+      con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+coroutine.resume(coroutine.create(function()
+    for i = 0,1.5,0.1 do
+        swait()
+ hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,1.1,-1.8)
+end
+end))
+kDamagefunc(hit,3,4,math.random(0,0),"Normal",root,0,1)
+so("http://roblox.com/asset/?id=636494529",rl,2,1.6)
+ RingEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8)),0.34)
+end
+end))
+
+
+      wait(0.05)
+attackdebounce = false
+end
+end
+end)
+      
+      
+              so("http://www.roblox.com/asset/?id=158475221", RightLeg, 1, 1.3)
+          for i = 0, 15.14, 0.32 do
+        swait()
+        root.Velocity = root.CFrame.lookVector * 20
+        BlockEffect(BrickColor.new("Lime green"), ll.CFrame*CF(0,-1,0), 2, 2, 2, 3.5, 3.5, 3.5, 0.05)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, -0.87) * angles(math.rad(-21-50*i), math.rad(8+20*i), math.rad(0-90*i)), 0.35)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(12), math.rad(0), math.rad(24)), 0.35)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(12), math.rad(0), math.rad(62)), 0.35)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.3, 0) * angles(math.rad(12), math.rad(0), math.rad(-23)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.17, -0.4) * RHCF * angles(math.rad(7), math.rad(0), math.rad(4)), 0.35)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.13, -0.6) * LHCF * angles(math.rad(-64-2*i), math.rad(0), math.rad(0-4*i)), 0.35)
+      end
+      
+      attack = false
+      con5:disconnect()
+      
+    end
+
+
+
+
+
+local ultra = false
+
+function Galekicks()
+    
+    attack = true
+                so("http://www.roblox.com/asset/?id=1452040709", RightLeg, 3, 1)
+          for i = 0, 1.65, 0.1 do
+        swait()
+        root.Velocity = root.CFrame.lookVector * 0
+        SphereEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-50,50),math.random(-50,50),math.random(-50,50)),1,5,1,.05,4,.05,0.03)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0.7, -0.3) * angles(math.rad(-32), math.rad(-2), math.rad(90)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(-17), math.rad(-90)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.1, 0.5, -0.6) * angles(math.rad(90), math.rad(0), math.rad(-56)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.2, 0.6, -0.5) * angles(math.rad(90), math.rad(0), math.rad(56)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, .62 , -0.3) * RHCF * angles(math.rad(-40), math.rad(0), math.rad(2)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-28), math.rad(0), math.rad(0)), 0.2)
+      end
+
+
+for i = 1, 17 do
+    
+          con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+coroutine.resume(coroutine.create(function()
+    for i = 0,1.5,0.1 do
+        swait()
+ hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,1.1,-1.8)
+end
+end))
+kDamagefunc(hit,1,2,math.random(0,0),"Normal",root,0,1)
+so("http://roblox.com/asset/?id=636494529",rl,2,1.6)
+ RingEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("Lime green"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8)),0.34)
+end
+end))
+
+
+      wait(0.05)
+attackdebounce = false
+end
+end
+end)
+    
+          for i = 0, .1, 0.2 do
+        swait()
+                BlockEffect(BrickColor.new("Lime green"), rl.CFrame*CF(0,-1,0), 2, 2, 2, 1.5, 1.5, 1.5, 0.03)
+                root.Velocity = root.CFrame.lookVector * 10
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, -0.5, -0.3) * angles(math.rad(-44), math.rad(-2), math.rad(90)), 0.7)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(-24), math.rad(-90)), 0.7)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.1, 0.5, -0.6) * angles(math.rad(90), math.rad(0), math.rad(-56)), 0.7)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.2, 0.6, -0.5) * angles(math.rad(90), math.rad(0), math.rad(56)), 0.7)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -.6 , 0) * RHCF * angles(math.rad(math.random(-100,-10)), math.rad(0), math.rad(2)), 0.7)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-34), math.rad(0), math.rad(0)), 0.7)
+      end
+
+      so("http://roblox.com/asset/?id=1340545854",rl,1,math.random(0.7,1))
+      
+          for i = 0, 0.4, 0.2 do
+        swait()
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0.7, -0.3) * angles(math.rad(-32), math.rad(-2), math.rad(90)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(-17), math.rad(-90)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.1, 0.5, -0.6) * angles(math.rad(90), math.rad(0), math.rad(-56)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.2, 0.6, -0.5) * angles(math.rad(90), math.rad(0), math.rad(56)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, .62 , -0.3) * RHCF * angles(math.rad(-40), math.rad(0), math.rad(2)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-28), math.rad(0), math.rad(0)), 0.2)
+      end
+      con5:disconnect()
+end
+
+          		    		    
+        u =   mouse.KeyDown:connect(function(key)
+          	if key == 'r' and combohits >= 150 then
+		    ultra = true
+		    SphereEffect(BrickColor.new("Really red"),tors.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,15,15,15,0.04)
+		    end
+          end)
+          wait(0.3)
+         if ultra == true then 
+combohits = 0
+wait(0.1)
+ for i = 0, 1.65, 0.1 do
+        swait()
+        root.Velocity = root.CFrame.lookVector * 0
+        SphereEffect(BrickColor.new("Really red"),rl.CFrame*angles(math.random(-50,50),math.random(-50,50),math.random(-50,50)),1,5,1,.05,4,.05,0.03)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0.7, -0.3) * angles(math.rad(-32), math.rad(-2), math.rad(90)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(-17), math.rad(-90)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.1, 0.5, -0.6) * angles(math.rad(90), math.rad(0), math.rad(-56)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.2, 0.6, -0.5) * angles(math.rad(90), math.rad(0), math.rad(56)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, .62 , -0.3) * RHCF * angles(math.rad(-40), math.rad(0), math.rad(2)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-28), math.rad(0), math.rad(0)), 0.2)
+      end
+
+
+so("http://roblox.com/asset/?id=146094803",hed,1,1.2)
+
+for i = 1, 65 do
+    --Aura(5, 0.15, "Add" , root.CFrame * CF(Mrandom(-12, 12), -6, Mrandom(-12, 12)) * angles(Rad(90 + Mrandom(-12, 12)), 0, 0), 1.5, 1.5, 10, -0.015, BrickC"Really red", 0, "Brick")
+          con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+coroutine.resume(coroutine.create(function()
+    for i = 0,1.5,0.1 do
+        swait()
+ hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,1.1,-1.8)
+end
+end))
+kDamagefunc(hit,1,2,math.random(0,0),"Normal",root,0,1)
+
+            
+            
+            
+so("http://roblox.com/asset/?id=636494529",rl,2,1.6)
+ RingEffect(BrickColor.new("Really red"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("Really red"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("Really red"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8)),0.34)
+end
+end))
+
+
+      wait(0.05)
+attackdebounce = false
+end
+end
+end)
+    
+          for i = 0, .03, 0.1 do
+        swait()
+                BlockEffect(BrickColor.new("Really red"), rl.CFrame*CF(0,-1,0), 2, 2, 2, 1.5, 1.5, 1.5, 0.03)
+                root.Velocity = root.CFrame.lookVector * 10
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, -0.5, -0.3) * angles(math.rad(-44), math.rad(-2), math.rad(90)), 0.7)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(-24), math.rad(-90)), 0.7)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.1, 0.5, -0.6) * angles(math.rad(90), math.rad(0), math.rad(-56)), 0.7)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.2, 0.6, -0.5) * angles(math.rad(90), math.rad(0), math.rad(56)), 0.7)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -.6 , 0) * RHCF * angles(math.rad(math.random(-100,-10)), math.rad(0), math.rad(2)), 0.7)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-34), math.rad(0), math.rad(0)), 0.7)
+      end
+
+      so("http://roblox.com/asset/?id=1340545854",rl,1,math.random(0.7,1))
+      
+          for i = 0, 0.07, 0.1 do
+        swait()
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0.7, -0.3) * angles(math.rad(-32), math.rad(-2), math.rad(90)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(-17), math.rad(-90)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.1, 0.5, -0.6) * angles(math.rad(90), math.rad(0), math.rad(-56)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.2, 0.6, -0.5) * angles(math.rad(90), math.rad(0), math.rad(56)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, .62 , -0.3) * RHCF * angles(math.rad(-40), math.rad(0), math.rad(2)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-28), math.rad(0), math.rad(0)), 0.2)
+      end
+      con5:disconnect()
+end
+
+for i = 0, 1.65, 0.1 do
+        swait()
+        root.Velocity = root.CFrame.lookVector * 0
+        SphereEffect(BrickColor.new("Really red"),rl.CFrame*angles(math.random(-50,50),math.random(-50,50),math.random(-50,50)),1,5,1,.05,4,.05,0.03)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0.7, -0.3) * angles(math.rad(-32), math.rad(-2), math.rad(90)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(-17), math.rad(-90)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.1, 0.5, -0.6) * angles(math.rad(90), math.rad(0), math.rad(-56)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.2, 0.6, -0.5) * angles(math.rad(90), math.rad(0), math.rad(56)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, .62 , -0.3) * RHCF * angles(math.rad(-40), math.rad(0), math.rad(2)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-28), math.rad(0), math.rad(0)), 0.2)
+      end
+
+con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+coroutine.resume(coroutine.create(function()
+    for i = 0,1.5,0.1 do
+        swait()
+ --hit.Parent.Head.CFrame = root.CFrame * CFrame.new(0,1.1,-1.8)
+end
+end))
+kDamagefunc(hit, 1, 3, 0,"Normal",root,0,1)
+so("http://roblox.com/asset/?id=636494529",rl,2,.63)
+ RingEffect(BrickColor.new("Really red"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+RingEffect(BrickColor.new("Really red"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,.2,2,.2,0.06)
+SphereEffect(BrickColor.new("Really red"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,3,3,3,0.06)
+
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8),math.random(-0.55*1.8,0.55*1.8)),0.34)
+end
+end))
+
+
+      wait(0.05)
+attackdebounce = false
+end
+end
+end)
+
+              so("http://www.roblox.com/asset/?id=1452040709", RightLeg, 1, 1.4)
+          SphereEffect(BrickColor.new("Really red"),rl.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,38,38,38,0.08)
+   
+  for i = 0, 2, 0.1 do
+        swait()
+		--BlockEffect(BrickColor.new("Really red"), rl.CFrame*CF(0,-1,0), 2, 2, 2, 1.5, 1.5, 1.5, 0.03)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, -0.5, -0.3) * angles(math.rad(-32), math.rad(-2), math.rad(90)), 0.2)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(0), math.rad(-17), math.rad(-90)), 0.2)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.1, 0.5, -0.6) * angles(math.rad(90), math.rad(0), math.rad(-56)), 0.3)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.2, 0.6, -0.5) * angles(math.rad(90), math.rad(0), math.rad(56)), 0.3)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -.6 , 0.2) * RHCF * angles(math.rad(-50), math.rad(0), math.rad(2)), 0.2)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.7, 0) * LHCF * angles(math.rad(-28), math.rad(0), math.rad(0)), 0.2)
+      end
+        SphereEffect(BrickColor.new("Really red"),tors.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,8,8,8,0.04)
+        
+        wait(0.25)
+        con5:Disconnect() 
+   
+
+        
+        
+        con5=hum.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") ~= nil then
+if attackdebounce == false then
+attackdebounce = true  
+
+kDamagefunc(hit,1,2,math.random(0,0),"Normal",root,0,1)
+so("http://roblox.com/asset/?id=565207203",ll,7,0.63)
+ 
+ RingEffect(BrickColor.new("Really red"),ll.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,2.2,6,2.2,0.04)
+RingEffect(BrickColor.new("Really red"),ll.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,2.2,6,2.2,0.04)
+SphereEffect(BrickColor.new("Really red"),ll.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,8,8,8,0.04)
+SpecialEffect(BrickColor.new("Really red"),ll.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,8,8,8,0.04)
+SphereEffect(BrickColor.new("Really red"),ll.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,5,18,5,0.04)
+WaveEffect(BrickColor.new("Really red"),ll.CFrame*angles(math.random(-360,360),math.random(-360,360),math.random(-360,360)),1,5,1,1.5,16,1.5,0.04)
+
+coroutine.resume(coroutine.create(function()
+    for i = 0,1,0.1 do
+        swait()
+        hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(math.random(-0.35*1.8,0.35*1.8),math.random(-0.35*1.8,0.35*1.8),math.random(-0.35*1.8,0.35*1.8)),0.24)
+end
+end))
+    
+          wait(0.06)
+attackdebounce = false
+
+end
+end
+end)
+
+coroutine.resume(coroutine.create(function()
+    while ultra == true do
+        swait()
+        root.CFrame = root.CFrame*CFrame.new(math.random(-3,3),math.random(-2,2),math.random(-3,3))
+    end
+    end))
+
+
+        so("http://www.roblox.com/asset/?id=158475221", RightLeg, 1, 1.3)
+        for i = 1,3 do
+          for i = 0, 9.14, 0.45 do
+        swait()
+                root.Velocity = root.CFrame.lookVector * 30
+        BlockEffect(BrickColor.new("Really red"), ll.CFrame*CF(0,-1,0), 2, 2, 2, 3.5, 3.5, 3.5, 0.05)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, -0.87) * angles(math.rad(8), math.rad(8), math.rad(0-94*i)), 0.35)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(12), math.rad(0), math.rad(24)), 0.35)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(12), math.rad(0), math.rad(62)), 0.35)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.3, 0) * angles(math.rad(12), math.rad(0), math.rad(-23)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.17, -0.4) * RHCF * angles(math.rad(7), math.rad(0), math.rad(4)), 0.35)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.13, -0.6) * LHCF * angles(math.rad(-64-7*i), math.rad(0), math.rad(0-9*i)), 0.35)
+      end
+      end
+    
+    
+    for i = 1,3 do
+              for i = 0, 11.14, 0.45 do
+        swait()
+        root.Velocity = root.CFrame.lookVector * 30
+        BlockEffect(BrickColor.new("Really red"), ll.CFrame*CF(0,-1,0), 2, 2, 2, 3.5, 3.5, 3.5, 0.05)
+        rootj.C0 = clerp(rootj.C0, RootCF * CFrame.new(0, 0, -0.87) * angles(math.rad(-21-30*i), math.rad(8+10*i), math.rad(0-110*i)), 0.35)
+        tors.Neck.C0 = clerp(tors.Neck.C0, necko * angles(math.rad(12), math.rad(0), math.rad(24)), 0.35)
+        RW.C0 = clerp(RW.C0, CFrame.new(1.5, 0.5, 0) * angles(math.rad(12), math.rad(0), math.rad(62)), 0.35)
+        LW.C0 = clerp(LW.C0, CFrame.new(-1.5, 0.3, 0) * angles(math.rad(12), math.rad(0), math.rad(-23)), 0.35)
+        RH.C0 = clerp(RH.C0, CFrame.new(1, -0.17, -0.4) * RHCF * angles(math.rad(27), math.rad(0), math.rad(74)), 0.35)
+        LH.C0 = clerp(LH.C0, CFrame.new(-1, -0.13, -0.6) * LHCF * angles(math.rad(-34-2*i), math.rad(0), math.rad(0-9*i)), 0.35)
+      end
+      
+      
+      
+    end
+     so("http://www.roblox.com/asset/?id=197161452", char, 0.5, 0.8)
+    con5:disconnect()
+     
+     
+  end -- combo hit end
+            attack = false
+          ultra = false
+  u:disconnect()
+          
+      end
+
+
+
+
+-------------------------------------------------------
+--End Attacks N Stuff--
+-------------------------------------------------------
+mouse.KeyDown:connect(function(key)
+    if string.byte(key) == 48 then
+        Swing = 2
+        hum.WalkSpeed = 24.82
+	end
+end)
+mouse.KeyUp:connect(function(key)
+    if string.byte(key) == 48 then
+        Swing = 1
+        hum.WalkSpeed = 8
+	end
+end)
+
+ 
+
+
+
+
+
+mouse.Button1Down:connect(function()
+ if attack==false then
+                if attacktype==1 then
+                        attack=true
+                        attacktype=2
+                        attackone()
+                elseif attacktype==2 then
+                        attack=true
+                        attacktype=3
+                        attacktwo()
+                elseif attacktype==3 then
+                        attack=true
+                        attacktype=4
+                        attackthree()
+                elseif attacktype==4 then
+                        attack=true
+                        attacktype=1
+                        attackfour()
+                end
+        end
+end)
+
+
+
+
+		  mouse.KeyDown:connect(function(key)
+		if key == 'e' and attack == false and cankick == true and cooldown == false then
+quickkick()
+cooldown = true
+
+coroutine.resume(coroutine.create(function()
+    wait(2)
+cooldown = false
+end))
+
+
+
+		end
+		end)
+
+
+
+
+
+
+
+
+mouse.KeyDown:connect(function(key)
+	if attack == false then
+		if key == 't' then
+			Taunt()
+		elseif key == 'f' then
+			Hyperkickcombo()
+					elseif key == 'r' then
+			Galekicks()
+		end
+	end
+end)
+
+-------------------------------------------------------
+--Start Animations--
+-------------------------------------------------------
+while true do
+	swait()
+	sine = sine + change
+	local torvel = (root.Velocity * Vector3.new(1, 0, 1)).magnitude
+	local velderp = root.Velocity.y
+	hitfloor, posfloor = rayCast(root.Position, CFrame.new(root.Position, root.Position - Vector3.new(0, 1, 0)).lookVector, 4* Player_Size, char)
+	
+	if hitfloor == nil then
+	    cankick = true
+    else
+        cankick = false
+        end
+	
+	
+	if equipped == true or equipped == false then
+		if attack == false then
+			idle = idle + 1
+		else
+			idle = 0
+		end
+		if 1 < root.Velocity.y and hitfloor == nil then
+			Anim = "Jump"
+			if attack == false then
+			    hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(0,0,0),0.15)
+				rootj.C0 = clerp(rootj.C0, RootCF * CF(0* Player_Size, 0* Player_Size, -0.1 + 0.1 * Cos(sine / 20)* Player_Size) * angles(Rad(-16), Rad(0), Rad(0)), 0.15)
+				neck.C0 = clerp(neck.C0, necko* CF(0, 0, 0 + ((1* Player_Size) - 1)) * angles(Rad(10 - 2.5 * Sin(sine / 30)), Rad(0), Rad(0)), 0.1)
+				RH.C0 = clerp(RH.C0, CF(1* Player_Size, -.2 - 0.1 * Cos(sine / 20)* Player_Size, -.3* Player_Size) * RHCF * angles(Rad(-2.5), Rad(0), Rad(0)), 0.15)
+				LH.C0 = clerp(LH.C0, CF(-1* Player_Size, -.9 - 0.1 * Cos(sine / 20), -.5* Player_Size) * LHCF * angles(Rad(-2.5), Rad(0), Rad(0)), 0.15)
+				RW.C0 = clerp(RW.C0, CF(1.5* Player_Size, 0.5 + 0.02 * Sin(sine / 20)* Player_Size, 0* Player_Size) * angles(Rad(25), Rad(-.6), Rad(13 + 4.5 * Sin(sine / 20))), 0.1)
+				LW.C0 = clerp(LW.C0, CF(-1.5* Player_Size, 0.5 + 0.02 * Sin(sine / 20)* Player_Size, 0* Player_Size) * angles(Rad(25), Rad(-.6), Rad(-13 - 4.5 * Sin(sine / 20))), 0.1)
+			end
+		elseif -1 > root.Velocity.y and hitfloor == nil then
+			Anim = "Fall"
+			if attack == false then
+			    hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(0,0,0),0.15)
+				rootj.C0 = clerp(rootj.C0, RootCF * CF(0* Player_Size, 0* Player_Size, -0.1 + 0.1 * Cos(sine / 20)* Player_Size) * angles(Rad(24), Rad(0), Rad(0)), 0.15)
+				neck.C0 = clerp(neck.C0, necko* CF(0, 0, 0 + ((1* Player_Size) - 1)) * angles(Rad(10 - 2.5 * Sin(sine / 30)), Rad(0), Rad(0)), 0.1)
+				RH.C0 = clerp(RH.C0, CF(1* Player_Size, -1 - 0.1 * Cos(sine / 20)* Player_Size, -.3* Player_Size) * RHCF * angles(Rad(-3.5), Rad(0), Rad(0)), 0.15)
+				LH.C0 = clerp(LH.C0, CF(-1* Player_Size, -.8 - 0.1 * Cos(sine / 20)* Player_Size, -.3* Player_Size) * LHCF * angles(Rad(-3.5), Rad(0), Rad(0)), 0.15)
+				RW.C0 = clerp(RW.C0, CF(1.5* Player_Size, 0.5 + 0.02 * Sin(sine / 20)* Player_Size, 0* Player_Size) * angles(Rad(65), Rad(-.6), Rad(45 + 4.5 * Sin(sine / 20))), 0.1)
+				LW.C0 = clerp(LW.C0, CF(-1.5* Player_Size, 0.5 + 0.02 * Sin(sine / 20)* Player_Size, 0* Player_Size) * angles(Rad(55), Rad(-.6), Rad(-45 - 4.5 * Sin(sine / 20))), 0.1)
+			end
+		elseif torvel < 1 and hitfloor ~= nil then
+			Anim = "Idle"
+			change = 1
+			if attack == false then
+			    hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(0,0,0),0.15)
+				rootj.C0 = clerp(rootj.C0, RootCF * CF(0* Player_Size, 0* Player_Size, -0.1 + 0.1* Player_Size * Cos(sine / 12)) * angles(Rad(0), Rad(0), Rad(20)), 0.1)
+				tors.Neck.C0 = clerp(tors.Neck.C0, necko* CF(0, 0, 0 + ((1* Player_Size) - 1)) * angles(Rad(-6.5 * Sin(sine / 12)), Rad(0), Rad(-20)), 0.1)
+				RH.C0 = clerp(RH.C0, CF(1* Player_Size, -0.9 - 0.1 * Cos(sine / 12)* Player_Size, 0* Player_Size) * angles(Rad(0), Rad(75), Rad(0)) * angles(Rad(-12.5), Rad(0), Rad(0)), 0.1)
+				LH.C0 = clerp(LH.C0, CF(-1* Player_Size, -0.9 - 0.1 * Cos(sine / 12)* Player_Size, -0.2* Player_Size) * angles(Rad(0), Rad(-65), Rad(0)) * angles(Rad(-6.5), Rad(0), Rad(6)), 0.1)
+				RW.C0 = clerp(RW.C0, CF(1.5* Player_Size, 0.2 + 0.05 * Sin(sine / 12)* Player_Size, 0* Player_Size) * angles(Rad(110), Rad(6 + 6.5 * Sin(sine / 12)), Rad(25)), 0.1)
+				LW.C0 = clerp(LW.C0, CF(-1.3* Player_Size, 0.2 + 0.05 * Sin(sine / 12)* Player_Size, -0.5* Player_Size) * angles(Rad(110), Rad(6 - 6.5 * Sin(sine / 12)), Rad(25)), 0.1)
+			end
+		elseif torvel > 2 and torvel < 22 and hitfloor ~= nil then
+			Anim = "Walk"
+			change = 1
+			if attack == false then
+			    hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(0,0,0),0.15)
+				rootj.C0 = clerp(rootj.C0, RootCF * CF(0* Player_Size, 0* Player_Size, -0.175 + 0.025 * Cos(sine / 3.5) + -Sin(sine / 3.5) / 7* Player_Size) * angles(Rad(3 - 2.5 * Cos(sine / 3.5)), Rad(0) - root.RotVelocity.Y / 75, Rad(8 * Cos(sine / 7))), 0.15)
+				tors.Neck.C0 = clerp(tors.Neck.C0, necko* CF(0, 0, 0 + ((1* Player_Size) - 1)) * angles(Rad(-1), Rad(0), Rad(0) - hed.RotVelocity.Y / 15), 0.15)
+				RH.C0 = clerp(RH.C0, CF(1* Player_Size, -0.8 - 0.5 * Cos(sine / 7) / 2* Player_Size, 0.6 * Cos(sine / 7) / 2* Player_Size)  * angles(Rad(-15 - 15 * Cos(sine / 7)) - rl.RotVelocity.Y / 75 + -Sin(sine / 7) / 2.5, Rad(90 - 10 * Cos(sine / 7)), Rad(0)) * angles(Rad(0 + 2 * Cos(sine / 7)), Rad(0), Rad(0)), 0.3)
+         		LH.C0 = clerp(LH.C0, CF(-1* Player_Size, -0.8 + 0.5 * Cos(sine / 7) / 2* Player_Size, -0.6 * Cos(sine / 7) / 2* Player_Size) * angles(Rad(-15 + 15 * Cos(sine / 7)) + ll.RotVelocity.Y / 75 + Sin(sine / 7) / 2.5, Rad(-90 - 10 * Cos(sine / 7)), Rad(0)) * angles(Rad(0 - 2 * Cos(sine / 7)), Rad(0), Rad(0)), 0.3)
+				RW.C0 = clerp(RW.C0, CF(1.5* Player_Size, 0.5 + 0.05 * Sin(sine / 7)* Player_Size, 0* Player_Size) * angles(Rad(56)  * Cos(sine / 7) , Rad(10 * Cos(sine / 7)), Rad(6) - ra.RotVelocity.Y / 75), 0.1)
+				LW.C0 = clerp(LW.C0, CF(-1.5* Player_Size, 0.5 + 0.05 * Sin(sine / 7)* Player_Size, 0* Player_Size) * angles(Rad(-56)  * Cos(sine / 7) , Rad(10 * Cos(sine / 7)) ,	Rad(-6) + la.RotVelocity.Y / 75), 0.1)
+			end
+		elseif torvel >= 22 and hitfloor ~= nil then
+			Anim = "Sprint"
+			change = 1.35
+			if attack == false then
+			    hum.CameraOffset = hum.CameraOffset:lerp(Vector3.new(0,0,0),0.15)
+			rootj.C0 = clerp(rootj.C0, RootCF * CF(0* Player_Size, 0* Player_Size, -0.175 + 0.025 * Cos(sine / 3.5) + -Sin(sine / 3.5) / 7* Player_Size) * angles(Rad(26 - 4.5 * Cos(sine / 3.5)), Rad(0) - root.RotVelocity.Y / 75, Rad(15 * Cos(sine / 7))), 0.15)
+			tors.Neck.C0 = clerp(tors.Neck.C0, necko* CF(0, 0, 0 + ((1* Player_Size) - 1)) * angles(Rad(-8.5 - 2 * Sin(sine / 20)), Rad(0), Rad(0) - hed.RotVelocity.Y / 15), 0.15)
+			RH.C0 = clerp(RH.C0, CF(1* Player_Size, -0.925 - 0.5 * Cos(sine / 7) / 2* Player_Size, 0.7 * Cos(sine / 7) / 2* Player_Size) * angles(Rad(-15 - 55 * Cos(sine / 7)) - rl.RotVelocity.Y / 75 + -Sin(sine / 7) / 2.5, Rad(90 - 0.1 * Cos(sine / 7)), Rad(0)) * angles(Rad(0 + 0.1 * Cos(sine / 7)), Rad(0), Rad(0)), 0.3)
+         	LH.C0 = clerp(LH.C0, CF(-1* Player_Size, -0.925 + 0.5 * Cos(sine / 7) / 2* Player_Size, -0.7 * Cos(sine / 7) / 2* Player_Size) * angles(Rad(-15 + 55 * Cos(sine / 7)) + ll.RotVelocity.Y / 75 + Sin(sine / 7) / 2.5, Rad(-90 - 0.1 * Cos(sine / 7)), Rad(0)) * angles(Rad(0 - 0.1 * Cos(sine / 7)), Rad(0), Rad(0)), 0.3)
+			RW.C0 = clerp(RW.C0, CF(1.5* Player_Size, 0.5 + 0.05 * Sin(sine / 30)* Player_Size, 0.34 * Cos(sine / 7* Player_Size)) * angles(Rad(-65) , Rad(0), Rad(13) - ra.RotVelocity.Y / 75), 0.15)
+			LW.C0 = clerp(LW.C0, CF(-1.5* Player_Size, 0.5 + 0.05 * Sin(sine / 30)* Player_Size, -0.34 * Cos(sine / 7* Player_Size)) * angles(Rad(-65)  , Rad(0) ,	Rad(-13) + la.RotVelocity.Y / 75), 0.15)
+			end
+		end
+	end
+	Music.SoundId = "rbxassetid://"..SONG
+	Music.Looped = true
+	Music.Pitch = 1
+	Music.Volume = 0.7
+	Music.Parent = tors
+	Music:Resume()
+	if 0 < #Effects then
+		for e = 1, #Effects do
+			if Effects[e] ~= nil then
+				local Thing = Effects[e]
+				if Thing ~= nil then
+					local Part = Thing[1]
+					local Mode = Thing[2]
+					local Delay = Thing[3]
+					local IncX = Thing[4]
+					local IncY = Thing[5]
+					local IncZ = Thing[6]
+					if 1 >= Thing[1].Transparency then
+						if Thing[2] == "Block1" then
+							Thing[1].CFrame = Thing[1].CFrame * CFrame.fromEulerAnglesXYZ(math.random(-50, 50), math.random(-50, 50), math.random(-50, 50))
+							local Mesh = Thing[1].Mesh
+							Mesh.Scale = Mesh.Scale + Vector3.new(Thing[4], Thing[5], Thing[6])
+							Thing[1].Transparency = Thing[1].Transparency + Thing[3]
+						elseif Thing[2] == "Block2" then
+							Thing[1].CFrame = Thing[1].CFrame + Vector3.new(0, 0, 0)
+							local Mesh = Thing[7]
+							Mesh.Scale = Mesh.Scale + Vector3.new(Thing[4], Thing[5], Thing[6])
+							Thing[1].Transparency = Thing[1].Transparency + Thing[3]
+						elseif Thing[2] == "Block3" then
+							Thing[1].CFrame = Thing[1].CFrame * CFrame.fromEulerAnglesXYZ(math.random(-50, 50), math.random(-50, 50), math.random(-50, 50)) + Vector3.new(0, 0.15, 0)
+							local Mesh = Thing[7]
+							Mesh.Scale = Mesh.Scale + Vector3.new(Thing[4], Thing[5], Thing[6])
+							Thing[1].Transparency = Thing[1].Transparency + Thing[3]
+						elseif Thing[2] == "Cylinder" then
+							local Mesh = Thing[1].Mesh
+							Mesh.Scale = Mesh.Scale + Vector3.new(Thing[4], Thing[5], Thing[6])
+							Thing[1].Transparency = Thing[1].Transparency + Thing[3]
+						elseif Thing[2] == "Blood" then
+							local Mesh = Thing[7]
+							Thing[1].CFrame = Thing[1].CFrame * Vector3.new(0, 0.5, 0)
+							Mesh.Scale = Mesh.Scale + Vector3.new(Thing[4], Thing[5], Thing[6])
+							Thing[1].Transparency = Thing[1].Transparency + Thing[3]
+						elseif Thing[2] == "Elec" then
+							local Mesh = Thing[1].Mesh
+							Mesh.Scale = Mesh.Scale + Vector3.new(Thing[7], Thing[8], Thing[9])
+							Thing[1].Transparency = Thing[1].Transparency + Thing[3]
+						elseif Thing[2] == "Disappear" then
+							Thing[1].Transparency = Thing[1].Transparency + Thing[3]
+						elseif Thing[2] == "Shatter" then
+							Thing[1].Transparency = Thing[1].Transparency + Thing[3]
+							Thing[4] = Thing[4] * CFrame.new(0, Thing[7], 0)
+							Thing[1].CFrame = Thing[4] * CFrame.fromEulerAnglesXYZ(Thing[6], 0, 0)
+							Thing[6] = Thing[6] + Thing[5]
+						end
+					else
+						Part.Parent = nil
+						table.remove(Effects, e)
+					end
+				end
+			end
+		end
+	end
+end
+-------------------------------------------------------
+--End Animations And Script--
+-------------------------------------------------------
