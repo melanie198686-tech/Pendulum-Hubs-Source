@@ -1,4 +1,4 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Tescalus/Pendulum-Hubs-Source/main/Reanimation.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/melanie198686-tech/Pendulum-Hubs-Source/refs/heads/main/Reanimation.lua"))()
 --// SHORTCUTS \\--
 local SCRIPTUTIL = game:GetObjects("rbxassetid://5276526474")[1]
 
